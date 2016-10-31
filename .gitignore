@@ -1,3 +1,6 @@
+# Custom
+/.idea
+
 *.iml
 .gradle
 /local.properties
