@@ -7,7 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
+import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.KFGD_Scheduler;
+import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.OnCellSelectedListener;
+import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.SelectedCell;
+import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.SelectedLinearLayout;
 import cnu.mobilesoftware.smartscheduler.R;
 
 public class SchedulerFragment extends Fragment implements ITitle{
@@ -27,8 +33,20 @@ public class SchedulerFragment extends Fragment implements ITitle{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_scheduler, container, false);
+        View view = inflater.inflate(R.layout.fragment_scheduler, container, false);
+        final KFGD_Scheduler scheduler = (KFGD_Scheduler)view.findViewById(R.id.kfgd_scheduler);
+        scheduler.setOnCellSelectedListener(new OnCellSelectedListener() {
+            @Override
+            public void selectedNormalCellList(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, ArrayList<SelectedCell> selectedList) {
+                scheduler.mergeCellList(selectedLinearLayout, sourceList, selectedList);
+            }
+
+            @Override
+            public void selectedUsedCell(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, SelectedCell selectedCell) {
+                scheduler.divideCell(selectedLinearLayout, sourceList, selectedCell);
+            }
+        });
+        return view;
     }
 
     @Override
