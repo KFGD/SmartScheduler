@@ -65,4 +65,6 @@ public class SelectedCell extends FrameLayout {
     public void setPosition(int position) {
         this.position = position;
     }
+    public void setTextOfSubjectName(String subjectName){this.tv_subjectName.setText(subjectName);}
+    public void setTextOfClassNum(String classNum){this.tv_classNum.setText(classNum);}
 }

@@ -37,7 +37,7 @@ public class KFGD_Scheduler extends LinearLayout {
         InitLayout(context);
     }
 
-    public void setOnObservedSelecteLinearyLayoutList(OnObservedSelectedLinearLayout onObservedSelecteLinearyLayout){
+    public void setOnObservedSelectedLinearLayoutList(OnObservedSelectedLinearLayout onObservedSelecteLinearyLayout){
         for(int i=0; i<columns.size(); ++i)
             columns.get(i).setOnObservedSelectedLinearLayout(onObservedSelecteLinearyLayout);
     }
