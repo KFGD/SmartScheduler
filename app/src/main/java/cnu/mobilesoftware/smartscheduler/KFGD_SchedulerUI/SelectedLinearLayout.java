@@ -13,14 +13,20 @@ import java.util.ArrayList;
  */
 public class SelectedLinearLayout extends LinearLayout implements View.OnTouchListener{
 
+    //외부에서 사용
     private OnObservedSelectedLinearLayout onObservedSelectedLinearLayout;
+    public SchedulerUtils.DAY_TAG day_tag;
 
-    private int CELL_COUNT = 12;
+    //내부에서 사용
+    private int CELL_COUNT = 13;    //12에서 1 더 추가된것은 dummyCell을 위해서
     private final Context mContext;
-    private ArrayList<SelectedCell> sourceList = new ArrayList<>(CELL_COUNT);
-
     private boolean isDivideFlag = false;
     private float start_y, end_y;
+
+
+    //내부외부 둘다
+    private ArrayList<SelectedCell> sourceList = new ArrayList<>(CELL_COUNT);
+    private ArrayList<ScheduleItem> scheduleItems = new ArrayList<>();
 
     public SelectedLinearLayout(Context context) {
         super(context);
@@ -78,7 +84,14 @@ public class SelectedLinearLayout extends LinearLayout implements View.OnTouchLi
     }
 
     private void initCellList() {
-        for (int i = 0; i < CELL_COUNT; ++i) {
+        //dummyCell
+        SelectedCell dummy = new SelectedCell(mContext);
+        dummy.setWeight(0);
+        dummy.setPosition(0);
+        dummy.refreshSelectedCell();
+        sourceList.add(dummy);
+
+        for (int i = 1; i < CELL_COUNT; ++i) {
             SelectedCell cell = new SelectedCell(mContext);
             cell.setWeight(1);
             cell.setPosition(i);
@@ -87,6 +100,10 @@ public class SelectedLinearLayout extends LinearLayout implements View.OnTouchLi
         }
         refreshSelectedLinearLayout();
         this.setOnTouchListener(this);
+    }
+
+    private void mappingItemAndCell(){
+
     }
 
     public void refreshSelectedLinearLayout() {

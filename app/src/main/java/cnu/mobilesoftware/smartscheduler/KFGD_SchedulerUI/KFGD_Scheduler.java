@@ -21,6 +21,7 @@ public class KFGD_Scheduler extends LinearLayout {
     private final int COLUMN_COUNT = 5;
     ArrayList<SelectedLinearLayout> columns = new ArrayList<>(COLUMN_COUNT);
     int idOfColumns[] = {R.id.dayOfMon, R.id.dayOfTue, R.id.dayOfWed, R.id.dayOfThu, R.id.dayOfFri};
+    SchedulerUtils.DAY_TAG day_tag[] = {SchedulerUtils.DAY_TAG.MONDAY, SchedulerUtils.DAY_TAG.TUESDAY, SchedulerUtils.DAY_TAG.WEDNESDAY, SchedulerUtils.DAY_TAG.THURSDAY, SchedulerUtils.DAY_TAG.FRIDAY};
 
     public KFGD_Scheduler(Context context) {
         super(context);
@@ -49,6 +50,7 @@ public class KFGD_Scheduler extends LinearLayout {
         addView(v);
         for(int i=0 ;i<idOfColumns.length; ++i) {
             SelectedLinearLayout column = (SelectedLinearLayout) v.findViewById(idOfColumns[i]);
+            column.day_tag = day_tag[i];
             columns.add(column);
         }
         for(int i=0; i<columns.size(); ++i)
