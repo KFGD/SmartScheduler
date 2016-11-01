@@ -2,10 +2,14 @@ package cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+
+import cnu.mobilesoftware.smartscheduler.R;
 
 
 /**
@@ -16,61 +20,70 @@ public class KFGD_Scheduler extends LinearLayout {
 
     private final int COLUMN_COUNT = 5;
     ArrayList<SelectedLinearLayout> columns = new ArrayList<>(COLUMN_COUNT);
+    int idOfColumns[] = {R.id.dayOfMon, R.id.dayOfTue, R.id.dayOfWed, R.id.dayOfThu, R.id.dayOfFri};
 
     public KFGD_Scheduler(Context context) {
         super(context);
-        Init(context);
+        InitLayout(context);
     }
 
     public KFGD_Scheduler(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Init(context);
+        InitLayout(context);
     }
 
-    private void Init(Context context) {
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1);
-        for(int i=0 ;i<COLUMN_COUNT; ++i) {
-            SelectedLinearLayout v = new SelectedLinearLayout(context);
-            v.setOrientation(VERTICAL);
-            v.setLayoutParams(lp);
-            addView(v);
-            columns.add(v);
-        }
+    public KFGD_Scheduler(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        InitLayout(context);
     }
 
-    public void setOnCellSelectedListener(OnCellSelectedListener onCellSelectedListener){
-        for(int i=0; i<COLUMN_COUNT; ++i){
-            columns.get(i).setOnCellSelectedListener(onCellSelectedListener);
+    public void setOnObservedSelecteLinearyLayoutList(OnObservedSelectedLinearLayout onObservedSelecteLinearyLayout){
+        for(int i=0; i<columns.size(); ++i)
+            columns.get(i).setOnObservedSelectedLinearLayout(onObservedSelecteLinearyLayout);
+    }
+
+    private void InitLayout(Context context) {
+
+        View v = LayoutInflater.from(context).inflate(R.layout.ui_scheduler, null, false);
+        v.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        addView(v);
+        for(int i=0 ;i<idOfColumns.length; ++i) {
+            SelectedLinearLayout column = (SelectedLinearLayout) v.findViewById(idOfColumns[i]);
+            columns.add(column);
         }
+        for(int i=0; i<columns.size(); ++i)
+            columns.get(i).refreshSelectedLinearLayout();
     }
 
     public void mergeCellList(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, ArrayList<SelectedCell> selectedList){
-        if(0>=selectedList.size())
+        if(selectedList.size()<=1)
             return;
 
-        int weight = selectedList.size();
-        int startPosition = selectedList.get(0).position;
-        for(int i=selectedList.size()-1; i>=1; --i)
-            sourceList.remove(selectedList.get(i).position);
-        for(int i=startPosition+1 ; i<sourceList.size(); ++i)
-            sourceList.get(i).position -= weight-1;
-
-        sourceList.get(selectedList.get(0).position).weight = weight;
-        sourceList.get(selectedList.get(0).position).setIsUsed(true);
-        sourceList.get(selectedList.get(0).position).refreshSelectedCell();
+        int startPosition = selectedList.get(0).getPosition();
+        sourceList.get(startPosition).setWeight(selectedList.size());
+        sourceList.get(startPosition).setIsMerged(true);
+        for(int i=1; i < selectedList.size(); ++i){
+            selectedList.get(i).setWeight(0);
+            selectedList.get(i).setIsMerged(true);
+        }
+        for(int i=0; i<selectedList.size(); ++i)
+            selectedList.get(i).refreshSelectedCell();
         selectedLinearLayout.refreshSelectedLinearLayout();
     }
 
     public void divideCell(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, SelectedCell selectedCell){
-        int startPosition = selectedCell.position;
-        int weight = selectedCell.weight;
-        for(int i=startPosition+1; i<startPosition+weight; ++i)
-            sourceList.add(i, new SelectedCell(getContext(), i));
-        for(int i=startPosition+weight; i<sourceList.size(); ++i)
-            sourceList.get(i).position += weight-1;
-        sourceList.get(selectedCell.position).weight = 1;
-        sourceList.get(selectedCell.position).setIsUsed(false);
-        sourceList.get(selectedCell.position).refreshSelectedCell();
+        if(selectedCell.getWeight() == 1)
+            return;
+
+        int startPosition = selectedCell.getPosition();
+        int endPosition = startPosition + selectedCell.getWeight();
+        for(int i = startPosition; i<endPosition; ++i){
+            SelectedCell currentCell = sourceList.get(i);
+            currentCell.setWeight(1);
+            currentCell.setIsMerged(false);
+            currentCell.refreshSelectedCell();
+        }
         selectedLinearLayout.refreshSelectedLinearLayout();
     }
+
 }

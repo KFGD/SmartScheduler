@@ -11,61 +11,65 @@ import java.util.ArrayList;
 /**
  * Created by GwanYongKim on 2016-09-01.
  */
-public class SelectedLinearLayout extends LinearLayout implements View.OnTouchListener {
+public class SelectedLinearLayout extends LinearLayout implements View.OnTouchListener{
 
-    private OnCellSelectedListener onCellSelectedListener;
+    private OnObservedSelectedLinearLayout onObservedSelectedLinearLayout;
 
     private int CELL_COUNT = 12;
-
     private final Context mContext;
     private ArrayList<SelectedCell> sourceList = new ArrayList<>(CELL_COUNT);
 
-    private boolean flag = false;
-    private float start_x, start_y;
-    private float end_x, end_y;
+    private boolean isDivideFlag = false;
+    private float start_y, end_y;
 
     public SelectedLinearLayout(Context context) {
         super(context);
         this.mContext = context;
-        initVerticalCellList();
-        this.setOnTouchListener(this);
+        initCellList();
     }
 
     public SelectedLinearLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.mContext = context;
-        initVerticalCellList();
-        this.setOnTouchListener(this);
+        initCellList();
     }
 
-    public void setOnCellSelectedListener(OnCellSelectedListener onCellSelectedListener) {
-        this.onCellSelectedListener = onCellSelectedListener;
+    public SelectedLinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        this.mContext = context;
+        initCellList();
+    }
+
+    public void setOnObservedSelectedLinearLayout(OnObservedSelectedLinearLayout onObservedSelectedLinearLayout) {
+        this.onObservedSelectedLinearLayout = onObservedSelectedLinearLayout;
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                start_x = event.getX();
                 start_y = event.getY();
-                if (0 < selectedCellList(start_y, start_y).size() && null != onCellSelectedListener) {
+                if (0 < selectedCellList(start_y, start_y).size() && null != onObservedSelectedLinearLayout) {
                     SelectedCell selectedcell = selectedCellList(start_y, start_y).get(0);
-                    if (selectedcell.getIsUsed()) {
-                        onCellSelectedListener.selectedUsedCell(this, sourceList, selectedcell);
-                        flag = false;
-                    } else {
-                        flag = true;
+                    //병합된 셀인지 구분
+                    if (selectedcell.getIsMerged()) {
+                        isDivideFlag = true;
+                    }else{
+                        isDivideFlag = false;
                     }
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                end_x = event.getX();
                 end_y = event.getY();
                 ArrayList<SelectedCell> selectedCellList = selectedCellList(start_y, end_y);
-                selectedCellList = removeIsUsedCellInCellList(selectedCellList);
-                if (0<selectedCellList.size() && null != onCellSelectedListener) {
-                    if (flag) {
-                        onCellSelectedListener.selectedNormalCellList(this, sourceList, selectedCellList);
+                if (0<selectedCellList.size() && null != onObservedSelectedLinearLayout) {
+                    if(isDivideFlag){
+                        SelectedCell divideCell = selectedCellList.get(0);
+                        onObservedSelectedLinearLayout.selectedMergedCell(this, sourceList, divideCell);
+                    } else if (selectedListCanMerged(selectedCellList)) {
+                        onObservedSelectedLinearLayout.selectedNormalCellList(this, sourceList, selectedCellList);
+                    } else{
+                        onObservedSelectedLinearLayout.error();
                     }
                 }
                 break;
@@ -73,38 +77,40 @@ public class SelectedLinearLayout extends LinearLayout implements View.OnTouchLi
         return true;
     }
 
-    private void initVerticalCellList() {
+    private void initCellList() {
         for (int i = 0; i < CELL_COUNT; ++i) {
-            SelectedCell cell = new SelectedCell(mContext, i);
-            cell.position = i;
+            SelectedCell cell = new SelectedCell(mContext);
+            cell.setWeight(1);
+            cell.setPosition(i);
+            cell.refreshSelectedCell();
             sourceList.add(cell);
         }
-        //sourceList.get(0).setCanSelected(false);
         refreshSelectedLinearLayout();
+        this.setOnTouchListener(this);
     }
 
     public void refreshSelectedLinearLayout() {
         this.removeAllViews();
         for (SelectedCell cell : sourceList) {
-            cell.refreshSelectedCell();
             this.addView(cell);
         }
     }
-    private ArrayList<SelectedCell> removeIsUsedCellInCellList(ArrayList<SelectedCell> selectedList){
-        ArrayList<SelectedCell> newList = new ArrayList<>();
+    private boolean selectedListCanMerged(ArrayList<SelectedCell> selectedList){
+        boolean isCanMerged = true;
         for(SelectedCell cell : selectedList){
-            if(!cell.getIsUsed())
-                newList.add(cell);
+            if(cell.getIsMerged()){
+                isCanMerged = false;
+                break;
+            }
         }
-        return newList;
+        return isCanMerged;
     }
 
     private ArrayList<SelectedCell> selectedCellList(float startPoint_y, float endPoint_y) {
         ArrayList<SelectedCell> selectList = new ArrayList<>();
         for (SelectedCell cell : this.sourceList) {
             if (cell.getY() >= startPoint_y - cell.getHeight() && cell.getY() <= endPoint_y)
-                if (cell.getCanSelected())
-                    selectList.add(cell);
+                selectList.add(cell);
         }
         return selectList;
     }

@@ -6,12 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
 import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.KFGD_Scheduler;
-import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.OnCellSelectedListener;
+import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.OnObservedSelectedLinearLayout;
 import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.SelectedCell;
 import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.SelectedLinearLayout;
 import cnu.mobilesoftware.smartscheduler.R;
@@ -34,16 +35,21 @@ public class SchedulerFragment extends Fragment implements ITitle{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scheduler, container, false);
-        final KFGD_Scheduler scheduler = (KFGD_Scheduler)view.findViewById(R.id.kfgd_scheduler);
-        scheduler.setOnCellSelectedListener(new OnCellSelectedListener() {
+        final KFGD_Scheduler scheduler = (KFGD_Scheduler)view.findViewById(R.id.scheduler);
+        scheduler.setOnObservedSelecteLinearyLayoutList(new OnObservedSelectedLinearLayout() {
             @Override
             public void selectedNormalCellList(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, ArrayList<SelectedCell> selectedList) {
                 scheduler.mergeCellList(selectedLinearLayout, sourceList, selectedList);
             }
 
             @Override
-            public void selectedUsedCell(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, SelectedCell selectedCell) {
+            public void selectedMergedCell(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, SelectedCell selectedCell) {
                 scheduler.divideCell(selectedLinearLayout, sourceList, selectedCell);
+            }
+
+            @Override
+            public void error() {
+                Toast.makeText(getContext(), "스케쥴을 입력할 수 없습니다.", Toast.LENGTH_SHORT).show();
             }
         });
         return view;
