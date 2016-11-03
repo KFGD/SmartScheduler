@@ -8,14 +8,14 @@
         android:id="@+id/tv_subjectName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="8sp"
+        android:textSize="10sp"
         android:text="강의"/>
 
     <TextView
         android:id="@+id/tv_classNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="7sp"
+        android:textSize="9sp"
         android:text="강의실"/>
 
 </LinearLayout>

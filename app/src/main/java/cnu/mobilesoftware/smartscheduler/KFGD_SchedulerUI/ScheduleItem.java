@@ -25,7 +25,6 @@ public class ScheduleItem  implements Parcelable{
         this.day = day_tag.name();
         this.startTime = startTime;
         this.endTime = endTime;
-
     }
 
     public ScheduleItem(SchedulerUtils.DAY_TAG day_tag, int startTime, int endTime, String subjectName, String classNum, String professor) {
@@ -35,6 +34,16 @@ public class ScheduleItem  implements Parcelable{
         this.subjectName = subjectName;
         this.classNum = classNum;
         this.professor = professor;
+    }
+
+    public ScheduleItem(SchedulerUtils.DAY_TAG day_tag, int startTime, int endTime, String subjectName, String classNum, String professor, String colorOfCell) {
+        this.day = day_tag.name();
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.subjectName = subjectName;
+        this.classNum = classNum;
+        this.professor = professor;
+        this.colorOfCell = colorOfCell;
     }
 
 

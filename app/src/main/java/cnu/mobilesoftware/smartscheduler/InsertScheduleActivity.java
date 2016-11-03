@@ -36,6 +36,7 @@ public class InsertScheduleActivity extends AppCompatActivity {
         et_professor = (EditText)findViewById(R.id.et_professor);
 
         et_cellOfColor = (EditText)findViewById(R.id.et_colorOfCell);
+        et_cellOfColor.setText(item.colorOfCell);
     }
 
     public void onClickFinishBtn(View v){

@@ -57,7 +57,7 @@ public class KFGD_Scheduler extends LinearLayout {
             columns.get(i).updateLayoutWithCell();
     }
 
-    public boolean updateCellDataWithScheduleItem(ScheduleItem item){
+    public boolean insertCellDataWithScheduleItem(ScheduleItem item){
         int columnIndex = SchedulerUtils.convertStringToDAY_TAG(item.day).ordinal();
         SelectedLinearLayout selectedLinearLayout = columns.get(columnIndex-1);
         if(!selectedLinearLayout.updateInsertDataInCell(item)){
@@ -67,34 +67,21 @@ public class KFGD_Scheduler extends LinearLayout {
         return true;
     }
 
-    /*public void mergeCellList(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, ArrayList<SelectedCell> selectedList){
-        if(selectedList.size()<=1)
-            return;
-
-        int startPosition = selectedList.get(0).getPosition();
-        sourceList.get(startPosition).setWeight(selectedList.size());
-        //sourceList.get(startPosition).setIsMerged(true);
-        for(int i=1; i < selectedList.size(); ++i){
-            selectedList.get(i).setWeight(0);
-            //selectedList.get(i).setIsMerged(true);
-        }
-        for(int i=0; i<selectedList.size(); ++i)
-            selectedList.get(i).updateLayout();
+    public boolean deleteCellDataWithScheduleItem(ScheduleItem item){
+        int columnIndex = SchedulerUtils.convertStringToDAY_TAG(item.day).ordinal();
+        SelectedLinearLayout selectedLinearLayout = columns.get(columnIndex-1);
+        selectedLinearLayout.updateDeleteDataInCell(item);
         selectedLinearLayout.updateLayoutWithCell();
-    } */
-
-    public void divideCell(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, SelectedCell selectedCell){
-        if(selectedCell.getWeight() == 1)
-            return;
-
-        int startPosition = selectedCell.getPosition();
-        int endPosition = startPosition + selectedCell.getWeight();
-        for(int i = startPosition; i<endPosition; ++i){
-            SelectedCell currentCell = sourceList.get(i);
-            currentCell.reset();
-            currentCell.updateLayout();
-        }
-        selectedLinearLayout.updateLayoutWithCell();
+        return true;
     }
 
+    public boolean editCellDataWithScheduleItem(ScheduleItem sourceItem, ScheduleItem updateItem){
+        int columnIndex = SchedulerUtils.convertStringToDAY_TAG(sourceItem.day).ordinal();
+        SelectedLinearLayout selectedLinearLayout = columns.get(columnIndex-1);
+        if(!selectedLinearLayout.updateEditDataInCell(sourceItem, updateItem)){
+            return false;
+        }
+        selectedLinearLayout.updateLayoutWithCell();
+        return true;
+    }
 }

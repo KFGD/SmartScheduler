@@ -58,7 +58,7 @@ public class SelectedCell extends FrameLayout {
             return;
 
         //셀 크기 및 색 조정
-        int weight = item.endTime - item.startTime;
+        int weight = item.endTime - item.startTime+1;
         LinearLayout.LayoutParams LP = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0, weight);
         this.setLayoutParams(LP);
         cell.setBackgroundColor(Color.parseColor(item.colorOfCell));
@@ -68,12 +68,10 @@ public class SelectedCell extends FrameLayout {
         tv_classNum.setText(item.classNum);
     }
 
+    public ScheduleItem getScheduleItem(){return this.item;}
     public void setDayTag(SchedulerUtils.DAY_TAG dayTag){this.item.day = dayTag.name();}
     public SchedulerUtils.DAY_TAG getDayTag(){return SchedulerUtils.convertStringToDAY_TAG(this.item.day);}
-    public int getWeight() {
-        return item.endTime-item.startTime;
-    }
-    public void setWeight(int weight) {this.item.endTime = this.item.startTime+weight;}
+    public void setEndPosition(int endPosition) {this.item.endTime = endPosition;}
     public int getPosition() {return item.startTime;}
     public void setPosition(int position){this.item.startTime = position;}
     public boolean getIsUsed(){return this.isUsed;}
@@ -82,5 +80,8 @@ public class SelectedCell extends FrameLayout {
     public void setClassNum(String classNum){this.item.classNum = classNum;}
     public void setProfessor(String professor){this.item.professor = professor;}
     public void setColorOfCell(String colorOfCell){this.item.colorOfCell = colorOfCell;}
-    public void reset(){this.isUsed = false; this.item.endTime = this.item.startTime + 1; this.item.colorOfCell = "#FFFFFF";}
+    public void reset() {
+        this.isUsed = false;
+        this.item = new ScheduleItem(SchedulerUtils.convertStringToDAY_TAG(this.item.day), this.item.startTime, this.item.startTime);
+    }
 }

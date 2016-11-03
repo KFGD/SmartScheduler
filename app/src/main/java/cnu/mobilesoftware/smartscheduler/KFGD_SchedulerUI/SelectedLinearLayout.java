@@ -86,13 +86,13 @@ public class SelectedLinearLayout extends LinearLayout implements View.OnTouchLi
         //dummyCell
         SelectedCell dummy = new SelectedCell(mContext);
         dummy.setPosition(0);
-        dummy.setWeight(0);
+        dummy.setEndPosition(-1);
         sourceList.add(dummy);
 
         for (int i = 1; i < CELL_COUNT; ++i) {
             SelectedCell cell = new SelectedCell(mContext);
             cell.setPosition(i);
-            cell.setWeight(1);
+            cell.setEndPosition(i);
             sourceList.add(cell);
         }
         updateLayoutWithCell();
@@ -109,7 +109,6 @@ public class SelectedLinearLayout extends LinearLayout implements View.OnTouchLi
 
     public boolean updateInsertDataInCell(ScheduleItem item){
         int position = item.startTime;
-        int weight = item.endTime - item.startTime + 1;
 
         //병합 가능한지 여부 확인
         for(int i=position; i<=item.endTime; ++i){
@@ -120,16 +119,45 @@ public class SelectedLinearLayout extends LinearLayout implements View.OnTouchLi
 
         SelectedCell selectedCell = sourceList.get(position);
         selectedCell.setIsUsed(true);
-        selectedCell.setWeight(weight);
+        selectedCell.setEndPosition(item.endTime);
         selectedCell.setSubjectName(item.subjectName);
         selectedCell.setClassNum(item.classNum);
         selectedCell.setProfessor(item.professor);
         selectedCell.setColorOfCell(item.colorOfCell);
         for(int i=position+1; i<=item.endTime; ++i){
-            sourceList.get(i).setWeight(0);
+            int startPosition = sourceList.get(i).getPosition();
+            sourceList.get(i).setEndPosition(startPosition-1);
             sourceList.get(i).setIsUsed(true);
         }
         return true;
+    }
+
+    public boolean updateDeleteDataInCell(ScheduleItem item){
+        int position = item.startTime;
+        for(int i= position; i<=item.endTime; ++i){
+            sourceList.get(i).reset();
+        }
+        return true;
+    }
+
+    public boolean updateEditDataInCell(ScheduleItem sourceItem, ScheduleItem updateItem){
+        boolean bReturn = false;
+        //수정이 불가능할 경우, 데이터 복원을 위해서 데이터 복사
+        ScheduleItem tempItem = new ScheduleItem(SchedulerUtils.convertStringToDAY_TAG(sourceItem.day), sourceItem.startTime, sourceItem.endTime,
+                sourceItem.subjectName, sourceItem.classNum, sourceItem.professor, sourceItem.colorOfCell);
+
+        //원본데이터 삭제
+        updateDeleteDataInCell(sourceItem);
+
+        if(updateInsertDataInCell(updateItem)){
+            //수정된 데이터가 삽입이 가능하고 그것이 성공했을 경우
+            bReturn = true;
+        }else{
+            //수정된 데이터가 삽입이 불가능하여 그것이 실패했을 경우
+            updateInsertDataInCell(tempItem);
+        }
+
+        return bReturn;
     }
 
     private boolean selectedListCanMerged(ArrayList<SelectedCell> selectedList){

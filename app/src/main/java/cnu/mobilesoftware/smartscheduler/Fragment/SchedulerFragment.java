@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import cnu.mobilesoftware.smartscheduler.EditScheduleActivity;
 import cnu.mobilesoftware.smartscheduler.InsertScheduleActivity;
 import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
 import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.KFGD_Scheduler;
@@ -26,15 +27,14 @@ public class SchedulerFragment extends Fragment implements ITitle, OnObservedSel
     public static final int REQUEST_INSERT_SCHEDULE = 100;
     public static final int RESULT_INSERT_SCHEDULE_SUCC = 101;
 
+    public static final int REQUEST_EDIT_SCHEDULE = 200;
+    public static final int RESULT_DELETE_SCHEDULE = 199;
+    public static final int RESULT_EDIT_SCHEDULE = 201;
+
     private final String mTitle = "Scheduler";
 
     //MemberVariable
     KFGD_Scheduler scheduler;
-
-    //OnObservedSelectedLinearLayout tempData
-    SelectedLinearLayout work_selectedLinearLayout;
-    ArrayList<SelectedCell> work_sourceList;
-    ArrayList<SelectedCell> work_selectedList;
 
     public static SchedulerFragment newInstance() {
         SchedulerFragment fragment = new SchedulerFragment();
@@ -62,8 +62,20 @@ public class SchedulerFragment extends Fragment implements ITitle, OnObservedSel
             case REQUEST_INSERT_SCHEDULE:{
                 if(resultCode == RESULT_INSERT_SCHEDULE_SUCC){
                     ScheduleItem item = data.getParcelableExtra("ITEM");
-                    if( !scheduler.updateCellDataWithScheduleItem(item)){
+                    if( !scheduler.insertCellDataWithScheduleItem(item)){
                         Toast.makeText(getContext(), "시간표 추가가 불가능합니다. ", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            case REQUEST_EDIT_SCHEDULE:{
+                if(resultCode == RESULT_DELETE_SCHEDULE){
+                    ScheduleItem item = data.getParcelableExtra("ITEM");
+                    scheduler.deleteCellDataWithScheduleItem(item);
+                }else if(resultCode == RESULT_EDIT_SCHEDULE){
+                    ScheduleItem sourceItem = data.getParcelableExtra("SOURCE_ITEM");
+                    ScheduleItem updateItem = data.getParcelableExtra("UPDATE_ITEM");
+                    if(!scheduler.editCellDataWithScheduleItem(sourceItem, updateItem)){
+                        Toast.makeText(getContext(), "시간표 수정이 불가능합니다.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -87,7 +99,10 @@ public class SchedulerFragment extends Fragment implements ITitle, OnObservedSel
 
     @Override
     public void selectedMergedCell(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, SelectedCell selectedCell) {
-        scheduler.divideCell(selectedLinearLayout, sourceList, selectedCell);
+        //scheduler.divideCell(selectedLinearLayout, sourceList, selectedCell);
+        Intent intent = new Intent(getContext(), EditScheduleActivity.class);
+        intent.putExtra("ITEM", selectedCell.getScheduleItem());
+        startActivityForResult(intent, REQUEST_EDIT_SCHEDULE);
     }
 
     @Override
