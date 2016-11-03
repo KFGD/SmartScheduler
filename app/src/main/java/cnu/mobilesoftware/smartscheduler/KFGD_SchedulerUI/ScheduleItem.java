@@ -9,6 +9,8 @@ import android.os.Parcelable;
 
 public class ScheduleItem  implements Parcelable{
     public long _ID=-1;
+
+    //Data
     public String day;
     public int startTime;
     public int endTime;
@@ -16,10 +18,14 @@ public class ScheduleItem  implements Parcelable{
     public String classNum = "";
     public String professor = "";
 
+    //Cell
+    public String colorOfCell = "#FFFFFF";
+
     public ScheduleItem(SchedulerUtils.DAY_TAG day_tag, int startTime, int endTime){
         this.day = day_tag.name();
         this.startTime = startTime;
         this.endTime = endTime;
+
     }
 
     public ScheduleItem(SchedulerUtils.DAY_TAG day_tag, int startTime, int endTime, String subjectName, String classNum, String professor) {
@@ -40,6 +46,7 @@ public class ScheduleItem  implements Parcelable{
         subjectName = in.readString();
         classNum = in.readString();
         professor = in.readString();
+        colorOfCell = in.readString();
     }
 
     public static final Creator<ScheduleItem> CREATOR = new Creator<ScheduleItem>() {
@@ -67,5 +74,6 @@ public class ScheduleItem  implements Parcelable{
         parcel.writeString(subjectName);
         parcel.writeString(classNum);
         parcel.writeString(professor);
+        parcel.writeString(colorOfCell);
     }
 }

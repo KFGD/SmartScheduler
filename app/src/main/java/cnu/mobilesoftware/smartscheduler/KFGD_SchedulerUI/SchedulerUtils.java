@@ -5,7 +5,13 @@ package cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI;
  */
 
 public class SchedulerUtils {
-    public enum DAY_TAG{NONE, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY};
+    public enum DAY_TAG{
+        NONE,
+        MONDAY,
+        TUESDAY,
+        WEDNESDAY,
+        THURSDAY,
+        FRIDAY};
     public static DAY_TAG convertStringToDAY_TAG(String text){
         switch (text){
             case "MONDAY":

@@ -50,28 +50,38 @@ public class KFGD_Scheduler extends LinearLayout {
         addView(v);
         for(int i=0 ;i<idOfColumns.length; ++i) {
             SelectedLinearLayout column = (SelectedLinearLayout) v.findViewById(idOfColumns[i]);
-            column.day_tag = day_tag[i];
+            column.setDay_tagWithCell(day_tag[i]);
             columns.add(column);
         }
         for(int i=0; i<columns.size(); ++i)
-            columns.get(i).refreshSelectedLinearLayout();
+            columns.get(i).updateLayoutWithCell();
     }
 
-    public void mergeCellList(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, ArrayList<SelectedCell> selectedList){
+    public boolean updateCellDataWithScheduleItem(ScheduleItem item){
+        int columnIndex = SchedulerUtils.convertStringToDAY_TAG(item.day).ordinal();
+        SelectedLinearLayout selectedLinearLayout = columns.get(columnIndex-1);
+        if(!selectedLinearLayout.updateInsertDataInCell(item)){
+            return false;
+        }
+        selectedLinearLayout.updateLayoutWithCell();
+        return true;
+    }
+
+    /*public void mergeCellList(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, ArrayList<SelectedCell> selectedList){
         if(selectedList.size()<=1)
             return;
 
         int startPosition = selectedList.get(0).getPosition();
         sourceList.get(startPosition).setWeight(selectedList.size());
-        sourceList.get(startPosition).setIsMerged(true);
+        //sourceList.get(startPosition).setIsMerged(true);
         for(int i=1; i < selectedList.size(); ++i){
             selectedList.get(i).setWeight(0);
-            selectedList.get(i).setIsMerged(true);
+            //selectedList.get(i).setIsMerged(true);
         }
         for(int i=0; i<selectedList.size(); ++i)
-            selectedList.get(i).refreshSelectedCell();
-        selectedLinearLayout.refreshSelectedLinearLayout();
-    }
+            selectedList.get(i).updateLayout();
+        selectedLinearLayout.updateLayoutWithCell();
+    } */
 
     public void divideCell(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, SelectedCell selectedCell){
         if(selectedCell.getWeight() == 1)
@@ -81,11 +91,10 @@ public class KFGD_Scheduler extends LinearLayout {
         int endPosition = startPosition + selectedCell.getWeight();
         for(int i = startPosition; i<endPosition; ++i){
             SelectedCell currentCell = sourceList.get(i);
-            currentCell.setWeight(1);
-            currentCell.setIsMerged(false);
-            currentCell.refreshSelectedCell();
+            currentCell.reset();
+            currentCell.updateLayout();
         }
-        selectedLinearLayout.refreshSelectedLinearLayout();
+        selectedLinearLayout.updateLayoutWithCell();
     }
 
 }

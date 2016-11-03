@@ -62,7 +62,9 @@ public class SchedulerFragment extends Fragment implements ITitle, OnObservedSel
             case REQUEST_INSERT_SCHEDULE:{
                 if(resultCode == RESULT_INSERT_SCHEDULE_SUCC){
                     ScheduleItem item = data.getParcelableExtra("ITEM");
-
+                    if( !scheduler.updateCellDataWithScheduleItem(item)){
+                        Toast.makeText(getContext(), "시간표 추가가 불가능합니다. ", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         }
@@ -77,14 +79,10 @@ public class SchedulerFragment extends Fragment implements ITitle, OnObservedSel
     public void selectedNormalCellList(SelectedLinearLayout selectedLinearLayout, ArrayList<SelectedCell> sourceList, ArrayList<SelectedCell> selectedList) {
         int startTime = selectedList.get(0).getPosition();
         int endTime = selectedList.get(selectedList.size()-1).getPosition();
-        ScheduleItem item = new ScheduleItem(selectedLinearLayout.day_tag, startTime, endTime);
+        ScheduleItem item = new ScheduleItem(selectedLinearLayout.getDay_tag(), startTime, endTime);
         Intent intent = new Intent(getContext(), InsertScheduleActivity.class);
         intent.putExtra("ITEM", item);
         startActivityForResult(intent, REQUEST_INSERT_SCHEDULE);
-        //scheduler.mergeCellList(selectedLinearLayout, sourceList, selectedList);
-        this.work_selectedLinearLayout = selectedLinearLayout;
-        this.work_sourceList = sourceList;
-        this.work_selectedList = selectedList;
     }
 
     @Override
@@ -94,6 +92,6 @@ public class SchedulerFragment extends Fragment implements ITitle, OnObservedSel
 
     @Override
     public void error() {
-        Toast.makeText(getContext(), "스케쥴을 입력할 수 없습니다.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "사용 중인 셀이 있습니다.", Toast.LENGTH_SHORT).show();
     }
 }
