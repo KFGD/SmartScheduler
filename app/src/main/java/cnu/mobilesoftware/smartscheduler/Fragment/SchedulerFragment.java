@@ -52,6 +52,7 @@ public class SchedulerFragment extends Fragment implements ITitle, OnObservedSel
         View view = inflater.inflate(R.layout.fragment_scheduler, container, false);
         scheduler = (KFGD_Scheduler)view.findViewById(R.id.scheduler);
         scheduler.setOnObservedSelectedLinearLayoutList(this);
+        scheduler.linkDB();
         return view;
     }
 

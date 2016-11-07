@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
+import cnu.mobilesoftware.smartscheduler.DBHelper;
+
 /**
  * Created by GwanYongKim on 2016-09-01.
  */
@@ -86,13 +88,13 @@ public class SelectedLinearLayout extends LinearLayout implements View.OnTouchLi
         //dummyCell
         SelectedCell dummy = new SelectedCell(mContext);
         dummy.setPosition(0);
-        dummy.setEndPosition(-1);
+        dummy.setEndTime(-1);
         sourceList.add(dummy);
 
         for (int i = 1; i < CELL_COUNT; ++i) {
             SelectedCell cell = new SelectedCell(mContext);
             cell.setPosition(i);
-            cell.setEndPosition(i);
+            cell.setEndTime(i);
             sourceList.add(cell);
         }
         updateLayoutWithCell();
@@ -107,6 +109,24 @@ public class SelectedLinearLayout extends LinearLayout implements View.OnTouchLi
         }
     }
 
+    public void setDBData(ArrayList<ScheduleItem> items){
+        for(ScheduleItem item : items){
+            int startTime = item.startTime;
+            SelectedCell cell = sourceList.get(startTime);
+            cell.setEndTime(item.endTime);
+
+            //추후, 바꿔야할 코드, 지금은 임시방편
+            if(item.startTime != item.endTime)
+                cell.setIsUsed(true);
+
+            cell.setSubjectName(item.subjectName);
+            cell.setClassNum(item.classNum);
+            cell.setProfessor(item.professor);
+            cell.setColorOfCell(item.colorOfCell);
+        }
+        updateLayoutWithCell();
+    }
+
     public boolean updateInsertDataInCell(ScheduleItem item){
         int position = item.startTime;
 
@@ -119,16 +139,24 @@ public class SelectedLinearLayout extends LinearLayout implements View.OnTouchLi
 
         SelectedCell selectedCell = sourceList.get(position);
         selectedCell.setIsUsed(true);
-        selectedCell.setEndPosition(item.endTime);
+        selectedCell.setEndTime(item.endTime);
         selectedCell.setSubjectName(item.subjectName);
         selectedCell.setClassNum(item.classNum);
         selectedCell.setProfessor(item.professor);
         selectedCell.setColorOfCell(item.colorOfCell);
         for(int i=position+1; i<=item.endTime; ++i){
             int startPosition = sourceList.get(i).getPosition();
-            sourceList.get(i).setEndPosition(startPosition-1);
+            sourceList.get(i).setEndTime(startPosition-1);
             sourceList.get(i).setIsUsed(true);
         }
+
+        //DB Data link 부분
+        ArrayList<ScheduleItem> items = new ArrayList<>();
+        for(SelectedCell cell : sourceList){
+            items.add(cell.getScheduleItem());
+        }
+        DBHelper.getInstance().insertScheduleItemsOfDay(items);
+
         return true;
     }
 
@@ -137,6 +165,14 @@ public class SelectedLinearLayout extends LinearLayout implements View.OnTouchLi
         for(int i= position; i<=item.endTime; ++i){
             sourceList.get(i).reset();
         }
+
+        //DB Data link 부분
+        ArrayList<ScheduleItem> items = new ArrayList<>();
+        for(SelectedCell cell : sourceList){
+            items.add(cell.getScheduleItem());
+        }
+        DBHelper.getInstance().insertScheduleItemsOfDay(items);
+
         return true;
     }
 

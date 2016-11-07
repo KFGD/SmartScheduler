@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
+import cnu.mobilesoftware.smartscheduler.DBHelper;
 import cnu.mobilesoftware.smartscheduler.R;
 
 
@@ -55,6 +56,13 @@ public class KFGD_Scheduler extends LinearLayout {
         }
         for(int i=0; i<columns.size(); ++i)
             columns.get(i).updateLayoutWithCell();
+    }
+
+    public void linkDB(){
+        for(int i=0 ; i<day_tag.length; ++i){
+            ArrayList<ScheduleItem> items = DBHelper.getInstance().getScheduleItemWithDay_Tag(day_tag[i]);
+            columns.get(i).setDBData(items);
+        }
     }
 
     public boolean insertCellDataWithScheduleItem(ScheduleItem item){

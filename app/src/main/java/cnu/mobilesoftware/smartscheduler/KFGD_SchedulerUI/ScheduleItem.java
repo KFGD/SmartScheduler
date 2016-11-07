@@ -8,7 +8,7 @@ import android.os.Parcelable;
  */
 
 public class ScheduleItem  implements Parcelable{
-    public long _ID=-1;
+    public int _ID=-1;
 
     //Data
     public String day;
@@ -46,9 +46,19 @@ public class ScheduleItem  implements Parcelable{
         this.colorOfCell = colorOfCell;
     }
 
+    public ScheduleItem(int _ID, SchedulerUtils.DAY_TAG day_tag, int startTime, int endTime, String subjectName, String classNum, String professor, String colorOfCell) {
+        this._ID = _ID;
+        this.day = day_tag.name();
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.subjectName = subjectName;
+        this.classNum = classNum;
+        this.professor = professor;
+        this.colorOfCell = colorOfCell;
+    }
 
     protected ScheduleItem(Parcel in) {
-        _ID = in.readLong();
+        _ID = in.readInt();
         day = in.readString();
         startTime = in.readInt();
         endTime = in.readInt();
@@ -76,7 +86,7 @@ public class ScheduleItem  implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeLong(_ID);
+        parcel.writeInt(_ID);
         parcel.writeString(day);
         parcel.writeInt(startTime);
         parcel.writeInt(endTime);

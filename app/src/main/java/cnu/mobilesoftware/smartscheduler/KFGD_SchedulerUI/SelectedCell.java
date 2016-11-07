@@ -71,7 +71,7 @@ public class SelectedCell extends FrameLayout {
     public ScheduleItem getScheduleItem(){return this.item;}
     public void setDayTag(SchedulerUtils.DAY_TAG dayTag){this.item.day = dayTag.name();}
     public SchedulerUtils.DAY_TAG getDayTag(){return SchedulerUtils.convertStringToDAY_TAG(this.item.day);}
-    public void setEndPosition(int endPosition) {this.item.endTime = endPosition;}
+    public void setEndTime(int endPosition) {this.item.endTime = endPosition;}
     public int getPosition() {return item.startTime;}
     public void setPosition(int position){this.item.startTime = position;}
     public boolean getIsUsed(){return this.isUsed;}
