@@ -1,14 +1,12 @@
 package cnu.mobilesoftware.smartscheduler.Fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import cnu.mobilesoftware.smartscheduler.CalendarActivity;
 import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
 import cnu.mobilesoftware.smartscheduler.R;
 

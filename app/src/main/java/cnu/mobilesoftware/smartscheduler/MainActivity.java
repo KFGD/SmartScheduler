@@ -1,6 +1,5 @@
 package cnu.mobilesoftware.smartscheduler;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -8,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onClickShowCalendar(View target){
-        Intent intent = new Intent(getApplicationContext(), CalendarActivity.class);
-        startActivity(intent);
-    }
     //Activity 생성 기본 과정
     private void init(){
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewPager);
