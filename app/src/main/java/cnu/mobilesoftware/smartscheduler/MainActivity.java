@@ -1,12 +1,12 @@
 package cnu.mobilesoftware.smartscheduler;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+
     }
 
     //Activity 생성 기본 과정
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
         setUpViewPagerAndTabLayout(viewPager, tabLayout);
+
+
     }
 
     private void setUpViewPagerAndTabLayout(ViewPager viewPager, TabLayout tabLayout){
@@ -50,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
                 tabLayout.getTabAt(i).setText(((ITitle) sectionPagerAdapter.getItem(i)).getTitle());
         }
     }
+
+
+
 
     public final class SectionsPagerAdapter extends FragmentPagerAdapter{
 
