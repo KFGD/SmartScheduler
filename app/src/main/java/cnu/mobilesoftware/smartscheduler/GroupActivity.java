@@ -1,10 +1,13 @@
 package cnu.mobilesoftware.smartscheduler;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -20,6 +23,7 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -32,12 +36,19 @@ public class GroupActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("참여 그룹");
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         GroupViewAdapter groupViewAdapter = new GroupViewAdapter();
         recyclerView.setAdapter(groupViewAdapter);
+    }
+
+    public void onClickFAB(View view){
+        FragmentManager fm = getSupportFragmentManager();
+        AddGroupDialog dialog = new AddGroupDialog();
+        dialog.show(fm, "");
     }
 
     private class GroupViewAdapter extends RecyclerView.Adapter<ViewHolder>{
@@ -73,6 +84,24 @@ public class GroupActivity extends AppCompatActivity {
                     }
                 }
             });
+
+            holder.ib.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this, R.style.Dialog_Alert);
+                    builder.setTitle("그룹 나가기");
+                    builder.setMessage(resources.get(position).group_title+" 그룹을 정말 나가시겠습니까?\n그룹을 나가시더라도 해당 그룹에 작성하신 글과 댓글은 자동으로 삭제되지 않습니다.");
+                    builder.setPositiveButton("나가기", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    builder.setNegativeButton("취소", null);
+                    builder.show();
+                }
+            });
+
             holder.tv.setText(resources.get(position).group_title);
         }
 
