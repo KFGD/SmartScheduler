@@ -27,6 +27,8 @@
         </activity>
         <activity android:name=".InsertScheduleActivity" />
         <activity android:name=".EditScheduleActivity"/>
+        <activity android:name=".GroupActivity" />
+        <activity android:name=".GroupDetailActivity"></activity>
     </application>
 
 </manifest>

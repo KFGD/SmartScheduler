@@ -3,4 +3,26 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="girl_generation_title">
+         소녀시대는 SM 엔터테인먼트 소속의 대한민국 8인조 걸 그룹이다.
+         태연, 써니, 티파니, 효연, 유리, 수영, 윤아, 서현 8명으로 이루어져 있다.
+       소녀시대라는 이름은 소녀들이 평정할 시대가 왔다는 의미를 갖고 있다.
+       소녀시대는 2007년 8월 2일 데뷔 싱글 〈다시 만난 세계〉를 발매하고
+         8월 5일 SBS를 통해 정식 데뷔했다
+     </string>
+    <string name="girls_generation_result">
+        소녀시대는 여러 대중 매체에서 대한민국 최고의 걸 그룹으로 불리고 있다.
+        문화평론가 하재근은 아이돌의 아이콘에서 시대의 아이콘이 된 것이다
+        소녀시대는 한국 대중문화를 상징하는 아이콘으로 격상되었다.
+        소녀시대를 빼놓고는 2009년, 2010년 한국 사회를 말할 수 없다고 말했다
+    </string>
+    <string name="girls_generation_sta">
+        소녀시대는 어려서부터 음악 춤 외국어 등을 기획사에서 체계적으로 훈련시켜 온 걸그룹이었다.
+        또한 소녀시대는 귀여운 이미지를 내세우는 일본 아이돌과 달리, 강렬한 이미지와 가창력 춤 실력을
+        내세워 아이돌의 새 개념을 만들었다고 한다.
+        태연은 한국에선 소녀시대가 친근한 이미지였는데 일본에선 동경한다는 반응이 많았어요
+        라고 말하기도 했다.
+    </string>
+    <string name="menu_settings">설정</string>
+    <string name="transitionName">girlGroupImageName</string>
 </resources>
