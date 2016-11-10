@@ -154,19 +154,6 @@ public class DBHelper extends SQLiteOpenHelper{
         return bReturn;
     }
 
-    /*public void deleteScheduleItem(ScheduleItem item){
-        SQLiteDatabase db = null;
-        String[] params = {String.valueOf(item.startTime)};
-        try{
-            db = getWritableDatabase();
-            db.delete(TableInfo.SCHEDULE_ITEM_LIST.TABLE_NAME, TableInfo.SCHEDULE_ITEM_LIST.startTime + "=?", params);
-        }catch (Exception e){
-            Log.e("DB_ERROR", "deleteScheduleItem()");
-        }finally {
-            closeResource(db);
-        }
-    }*/
-
     private void closeResource(SQLiteDatabase db){
         if(null != db)
             db.close();

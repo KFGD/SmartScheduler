@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_group_detail"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context="cnu.mobilesoftware.smartscheduler.GroupDetailActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -73,7 +75,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/girl_generation_title"/>
+                        android:text="@string/group_notice"/>
 
                 </LinearLayout>
 
@@ -100,7 +102,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/girls_generation_result"/>
+                        android:text="@string/group_member"/>
 
                 </LinearLayout>
 
@@ -127,7 +129,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/girls_generation_sta"/>
+                        android:text="@string/group_post"/>
 
                 </LinearLayout>
 

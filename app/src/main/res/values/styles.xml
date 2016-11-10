@@ -9,8 +9,9 @@
     </style>
 
     <style name="Theme.SmartSchedulerTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">#FFFFFFFF</item>
-        <item name="colorAccent">#FF000000</item>
+        <item name="colorPrimary">#EC4074</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="colorPrimaryDark">#E91E63</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -20,5 +21,9 @@
         <item name="android:paddingTop">24dp</item>
         <item name="android:paddingBottom">24dp</item>
         <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="Theme.MaterialDesign" parent="Theme.SmartSchedulerTheme">
+
     </style>
 </resources>

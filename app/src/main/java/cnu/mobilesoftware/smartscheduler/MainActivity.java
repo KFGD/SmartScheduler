@@ -11,12 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cnu.mobilesoftware.smartscheduler.Fragment.MemoFragment;
 import cnu.mobilesoftware.smartscheduler.Fragment.SchedulerFragment;
 import cnu.mobilesoftware.smartscheduler.Fragment.TodayFragment;
 import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
+import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.ScheduleItem;
+import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.SchedulerUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
         setUpViewPagerAndTabLayout(viewPager, tabLayout);
-
-
     }
 
     private void setUpViewPagerAndTabLayout(ViewPager viewPager, TabLayout tabLayout){

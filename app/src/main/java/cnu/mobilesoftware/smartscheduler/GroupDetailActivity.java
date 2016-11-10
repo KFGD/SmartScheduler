@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.transition.Transition;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -55,5 +56,11 @@ public class GroupDetailActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle(groupItem.group_title);
 
         memberImage.setImageResource(groupItem.img_res);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //getMenuInflater().inflate(R.menu.sample_actions, menu);
+        return true;
     }
 }

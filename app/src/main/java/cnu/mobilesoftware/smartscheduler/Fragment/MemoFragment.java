@@ -27,7 +27,21 @@ public class MemoFragment extends Fragment implements ITitle{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_memo, container, false);
+        View view = inflater.inflate(R.layout.fragment_memo, container, false);
+
+        //여기가 Activity onCreate 부분입니다.
+
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
     }
 
     @Override

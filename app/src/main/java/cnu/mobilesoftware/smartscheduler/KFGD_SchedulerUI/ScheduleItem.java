@@ -12,7 +12,7 @@ public class ScheduleItem  implements Parcelable{
 
     //Data
     public String day;
-    public int startTime;
+    public int startTime;   //1: 9시, 2: 10시, 3: 11시, 4: 12시
     public int endTime;
     public String subjectName = "";
     public String classNum = "";
