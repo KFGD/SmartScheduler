@@ -8,7 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import cnu.mobilesoftware.smartscheduler.KFGD_MemoUI.Memo;
 import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.ScheduleItem;
 import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.SchedulerUtils;
 
@@ -55,6 +57,15 @@ public class DBHelper extends SQLiteOpenHelper{
                 .append(TableInfo.SCHEDULE_ITEM_LIST.colorOfCell + " TEXT")
                 .append(" );");
         sqLiteDatabase.execSQL(tableScheduleItemList.toString());
+
+        StringBuilder tableMemoItemList = new StringBuilder();
+        tableMemoItemList.append(" CREATE TABLE " + TableInfo.MEMO_ITEM_LIST.TABLE_NAME)
+                .append(" (")
+                .append(TableInfo.MEMO_ITEM_LIST._ID + " INTEGER primary key autoincrement ,")
+                .append(TableInfo.MEMO_ITEM_LIST.DATE_TIME + " TEXT ,")
+                .append(TableInfo.MEMO_ITEM_LIST.CONTENT + " TEXT")
+                .append(" );");
+        sqLiteDatabase.execSQL(tableMemoItemList.toString());
     }
 
     @Override
@@ -164,6 +175,64 @@ public class DBHelper extends SQLiteOpenHelper{
             cursor.close();
         if(null != db)
             db.close();
+    }
+
+    public HashMap<String, Memo> getMemoListFromDB(){
+        HashMap<String, Memo> memoList = null;
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        try{
+            //String[] columnNames = {"datetime", "content"};
+            db = getReadableDatabase();
+            cursor = db.query("Schedule", null, null, null, null, null, null);
+            memoList = new HashMap<>();
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()){
+                int _ID = cursor.getInt(cursor.getColumnIndex(TableInfo.MEMO_ITEM_LIST._ID));
+                String DATE_TIME = cursor.getString(cursor.getColumnIndex(TableInfo.MEMO_ITEM_LIST.DATE_TIME));
+                String CONTENT = cursor.getString(cursor.getColumnIndex(TableInfo.MEMO_ITEM_LIST.CONTENT));
+                memoList.put(DATE_TIME, new Memo(_ID, DATE_TIME, CONTENT));
+                cursor.moveToNext();
+            }
+        } catch (Exception e){
+            Log.e("DB_ERROR", "getMemoListFromDB()");
+        } finally{
+            closeResource(db, cursor);
+        }
+        return memoList;
+    }
+
+    public void insertMemoInDB(Memo memo){
+        SQLiteDatabase db = null;
+        try{
+            db = getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(TableInfo.MEMO_ITEM_LIST.DATE_TIME, memo.getDataTimeToString());
+            contentValues.put(TableInfo.MEMO_ITEM_LIST.CONTENT, memo.getContent());
+            db.insert(TableInfo.MEMO_ITEM_LIST.TABLE_NAME, null, contentValues);
+        } catch (Exception e){
+            Log.e("DB_ERROR", "insertMemoInDB");
+        } finally{
+            closeResource(db);
+        }
+    }
+
+    public void updateMemoInDB(Memo memo){
+        SQLiteDatabase db = null;
+        try{
+            db = getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(TableInfo.MEMO_ITEM_LIST.CONTENT, memo.getContent());
+            String[] params = {String.valueOf(memo.getID())};
+            db.update(TableInfo.MEMO_ITEM_LIST.TABLE_NAME,
+                    contentValues,
+                    TableInfo.MEMO_ITEM_LIST._ID + "=?",
+                    params);
+        } catch (Exception e){
+            Log.e("DB_ERROR", "upateMemoInDB");
+        } finally{
+            closeResource(db);
+        }
     }
 
 }

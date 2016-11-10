@@ -19,4 +19,10 @@ public class TableInfo {
         public static final String colorOfCell = "COLOR_OF_CELL";
     }
 
+    public static final class MEMO_ITEM_LIST implements BaseColumns{
+        public static final String TABLE_NAME = "MEMO_ITEM_LIST";
+        public static final String _ID = "_id";
+        public static final String DATE_TIME = "DATE_TIME";
+        public static final String CONTENT = "CONTENT";
+    }
 }
