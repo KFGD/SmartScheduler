@@ -24,7 +24,7 @@ public class GroupDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_group_detail);
 
 
-        final ImageView memberImage = (ImageView)findViewById(R.id.member_image);
+        final ImageView memberImage = (ImageView)findViewById(R.id.group_image);
 
         Intent intent = getIntent();
         groupItem = intent.getParcelableExtra("GROUP_ITEM");

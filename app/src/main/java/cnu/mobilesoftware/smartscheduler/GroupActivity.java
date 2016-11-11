@@ -88,7 +88,7 @@ public class GroupActivity extends AppCompatActivity {
             holder.ib.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this, R.style.Dialog_Alert);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(GroupActivity.this);
                     builder.setTitle("그룹 나가기");
                     builder.setMessage(resources.get(position).group_title+" 그룹을 정말 나가시겠습니까?\n그룹을 나가시더라도 해당 그룹에 작성하신 글과 댓글은 자동으로 삭제되지 않습니다.");
                     builder.setPositiveButton("나가기", new DialogInterface.OnClickListener() {
