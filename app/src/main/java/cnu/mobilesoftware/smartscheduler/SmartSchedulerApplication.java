@@ -27,6 +27,10 @@ public class SmartSchedulerApplication extends Application{
         return mContext;
     }
 
+    public static String getUUID(){
+        return mUUID;
+    }
+
     @Override
     public void onCreate(){
         super.onCreate();
