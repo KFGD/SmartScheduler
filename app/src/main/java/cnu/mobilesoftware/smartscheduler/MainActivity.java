@@ -1,20 +1,25 @@
 package cnu.mobilesoftware.smartscheduler;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.View;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cnu.mobilesoftware.smartscheduler.Fragment.MemoFragment;
 import cnu.mobilesoftware.smartscheduler.Fragment.SchedulerFragment;
 import cnu.mobilesoftware.smartscheduler.Fragment.TodayFragment;
 import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
+import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.ScheduleItem;
+import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.SchedulerUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -23,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+
     }
 
     //Activity 생성 기본 과정
@@ -50,6 +56,12 @@ public class MainActivity extends AppCompatActivity {
                 tabLayout.getTabAt(i).setText(((ITitle) sectionPagerAdapter.getItem(i)).getTitle());
         }
     }
+
+    public void onClickGroupPage(View view){
+        Intent intent = new Intent(MainActivity.this, GroupActivity.class);
+        startActivity(intent);
+    }
+
 
     public final class SectionsPagerAdapter extends FragmentPagerAdapter{
 
