@@ -3,6 +3,7 @@ package cnu.mobilesoftware.smartscheduler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -184,7 +185,7 @@ public class DBHelper extends SQLiteOpenHelper{
         try{
             //String[] columnNames = {"datetime", "content"};
             db = getReadableDatabase();
-            cursor = db.query("Schedule", null, null, null, null, null, null);
+            cursor = db.query(TableInfo.MEMO_ITEM_LIST.TABLE_NAME, null, null, null, null, null, null);
             memoList = new HashMap<>();
             cursor.moveToFirst();
             while(!cursor.isAfterLast()){
@@ -196,6 +197,7 @@ public class DBHelper extends SQLiteOpenHelper{
             }
         } catch (Exception e){
             Log.e("DB_ERROR", "getMemoListFromDB()");
+            e.printStackTrace();
         } finally{
             closeResource(db, cursor);
         }
