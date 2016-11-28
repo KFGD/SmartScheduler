@@ -5,7 +5,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
-
     <!--GroupDetailActivity-->
     <string name="group_schedule">그룹의 모임을 표시하는 란</string>
     <string name="group_notice">그룹의 공지를 표시하는 란</string>
