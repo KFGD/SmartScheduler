@@ -1,6 +1,8 @@
 package cnu.mobilesoftware.smartscheduler;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -27,7 +29,7 @@ public class AddGroupDialog extends AppCompatDialogFragment implements View.OnCl
     TextInputEditText tie_end_day, tie_group_name;
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
+    WebDBHelper webdb = new WebDBHelper();
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,12 +57,30 @@ public class AddGroupDialog extends AppCompatDialogFragment implements View.OnCl
 
                 if(bValue) {
                     //모든 조건이 클리어 될 때,
-                    String uuid = SmartSchedulerApplication.getUUID();
-                    String group_endDay = tie_end_day.getText().toString();
-                    String group_title = tie_group_name.getText().toString();
-                    //염철민 하세요
+                    final String uuid = SmartSchedulerApplication.getUUID();
+                    final String group_endDay = tie_end_day.getText().toString();
+                    final String group_title = tie_group_name.getText().toString();
                     Log.i("info", "UUID: " + uuid + " / GROUP_END_DAY: " + group_endDay + " / GROUP_TITLE: " + group_title);
-
+                    new AsyncTask<Void, Void, String>(){
+                        //ProgressDialog pd = new ProgressDialog(AddGroupDialog.this);
+                        @Override
+                        protected String doInBackground(Void... voids) {
+                            webdb.INSERTGROUPINFO(group_title, "none", group_endDay);
+                            webdb.INSERTUSERGROUP(uuid, group_title);
+                            return null;
+                        }
+                        @Override
+                        protected void onPreExecute() {
+                            super.onPreExecute();
+                            //pd.setMessage("기다려");
+                            //pd.show();
+                        }
+                        @Override
+                        protected void onPostExecute(String s) {
+                            super.onPostExecute(s);
+                            //pd.dismiss();
+                        }
+                    }.execute();
                     dismiss();
                 }
                 break;
