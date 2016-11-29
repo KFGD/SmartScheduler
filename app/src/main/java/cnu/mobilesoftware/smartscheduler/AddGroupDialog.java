@@ -23,8 +23,8 @@ import java.util.Calendar;
 
 public class AddGroupDialog extends AppCompatDialogFragment implements View.OnClickListener, View.OnFocusChangeListener{
 
-    TextInputLayout til_start_day, til_end_day, til_group_name;
-    TextInputEditText tie_start_day, tie_end_day, tie_group_name;
+    TextInputLayout til_end_day, til_group_name;
+    TextInputEditText tie_end_day, tie_group_name;
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -40,14 +40,11 @@ public class AddGroupDialog extends AppCompatDialogFragment implements View.OnCl
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.ib_start_day: onClickCalendarImgBtn(tie_start_day); break;
+            //case R.id.ib_start_day: onClickCalendarImgBtn(tie_start_day); break;
             case R.id.ib_end_day: onClickCalendarImgBtn(tie_end_day); break;
             case R.id.btn_check:
+                //확인 버튼 눌렀을 때,
                 boolean bValue = true;
-                if(!ValidateDate(tie_start_day)){
-                    til_start_day.setError("날짜 형식에 맞춰주시기 바랍니다.");
-                    bValue = false;
-                }
                 if(!ValidateDate(tie_end_day)){
                     til_end_day.setError("날짜 형식에 맞춰주시기 바랍니다.");
                     bValue = false;
@@ -57,6 +54,13 @@ public class AddGroupDialog extends AppCompatDialogFragment implements View.OnCl
                 }
 
                 if(bValue) {
+                    //모든 조건이 클리어 될 때,
+                    String uuid = SmartSchedulerApplication.getUUID();
+                    String group_endDay = tie_end_day.getText().toString();
+                    String group_title = tie_group_name.getText().toString();
+                    //염철민 하세요
+                    Log.i("info", "UUID: " + uuid + " / GROUP_END_DAY: " + group_endDay + " / GROUP_TITLE: " + group_title);
+
                     dismiss();
                 }
                 break;
@@ -113,10 +117,6 @@ public class AddGroupDialog extends AppCompatDialogFragment implements View.OnCl
     @Override
     public void onFocusChange(View view, boolean b) {
         switch (view.getId()){
-            case R.id.tie_start_day:
-                if(b) convertDateToNumber(tie_start_day);
-                else convertNumberToDate(tie_start_day);
-                break;
             case R.id.tie_end_day:
                 if(b) convertDateToNumber(tie_end_day);
                 else convertNumberToDate(tie_end_day);
@@ -146,25 +146,18 @@ public class AddGroupDialog extends AppCompatDialogFragment implements View.OnCl
     private void initializeWidget(View view) {
         Calendar calendar = Calendar.getInstance();
         String date = format.format(calendar.getTime());
-        til_start_day = (TextInputLayout)view.findViewById(R.id.til_start_day);
-        til_start_day.setHint("시작일(형식: "+date+")");
         til_end_day = (TextInputLayout)view.findViewById(R.id.til_end_day);
         til_end_day.setHint("종료일(형식: "+date+")");
         til_group_name = (TextInputLayout)view.findViewById(R.id.til_group_title);
 
-        tie_start_day = (TextInputEditText)view.findViewById(R.id.tie_start_day);
-        tie_start_day.setText(date);
-        tie_start_day.setOnFocusChangeListener(this);
         tie_end_day = (TextInputEditText)view.findViewById(R.id.tie_end_day);
         tie_end_day.setText(date);
         tie_end_day.setOnFocusChangeListener(this);
         tie_group_name = (TextInputEditText)view.findViewById(R.id.tie_group_title);
 
-        ImageButton ib_start_day = (ImageButton)view.findViewById(R.id.ib_start_day);
         ImageButton ib_end_day = (ImageButton)view.findViewById(R.id.ib_end_day);
         Button checkBtn = (Button)view.findViewById(R.id.btn_check);
 
-        ib_start_day.setOnClickListener(this);
         ib_end_day.setOnClickListener(this);
         checkBtn.setOnClickListener(this);
     }
