@@ -3,7 +3,6 @@ package cnu.mobilesoftware.smartscheduler;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
@@ -14,18 +13,17 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Explode;
-import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import cnu.mobilesoftware.smartscheduler.Dialog.AddGroupDialog;
+import cnu.mobilesoftware.smartscheduler.Dialog.EnterGroupDialog;
 
 public class GroupActivity extends AppCompatActivity {
 
@@ -45,9 +43,15 @@ public class GroupActivity extends AppCompatActivity {
         recyclerView.setAdapter(groupViewAdapter);
     }
 
-    public void onClickFAB(View view){
+    public void onClickAddGroup(View view){
         FragmentManager fm = getSupportFragmentManager();
         AddGroupDialog dialog = new AddGroupDialog();
+        dialog.show(fm, "");
+    }
+
+    public void onClickEnterGroup(View view){
+        FragmentManager fm = getSupportFragmentManager();
+        EnterGroupDialog dialog = new EnterGroupDialog();
         dialog.show(fm, "");
     }
 

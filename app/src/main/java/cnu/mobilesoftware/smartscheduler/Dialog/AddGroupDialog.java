@@ -1,4 +1,4 @@
-package cnu.mobilesoftware.smartscheduler;
+package cnu.mobilesoftware.smartscheduler.Dialog;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -18,6 +18,9 @@ import android.widget.ImageButton;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import cnu.mobilesoftware.smartscheduler.R;
+import cnu.mobilesoftware.smartscheduler.SmartSchedulerApplication;
 
 /**
  * Created by GwanYongKim on 2016-11-11.
