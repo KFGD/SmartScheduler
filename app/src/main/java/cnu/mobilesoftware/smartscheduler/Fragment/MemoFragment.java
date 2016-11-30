@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,8 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
     ImageButton memoBtn;
     Memo selectedMemo;
     String[] colorOfArray = new String[]{"#7784C2", "#C784C2", "#C7EBA8", "#71EBA8", "#7130A8", "#6D8FF5"};
+   // String[] colorOfArray = new String[]{"#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF"};
+
     int count = 0;
 
 
@@ -73,6 +76,7 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
 
         memoText = (TextView)view.findViewById(R.id.memo_text);
         memoBtn = (ImageButton)view.findViewById(R.id.memo_btn);
+
         memoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +120,7 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
 
     private void refreshMemoList(){
         memoList = DBHelper.getInstance().getMemoListFromDB();
+        Log.d("getMemoList","getMemolist"+memoList.values());
         if(null == memoList)
             memoList = new HashMap<>();
     }
@@ -133,8 +138,18 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
 
     @Override
     public void onDateSelected(Date date) {
-        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-        Toast.makeText(getContext(), df.format(date), Toast.LENGTH_SHORT).show();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        //Toast.makeText(MainActivity.this, df.format(date), Toast.LENGTH_SHORT).show();
+        memoBtn.setVisibility(View.VISIBLE);
+        selectedMemo = memoList.get(df.format(date));
+
+        if (null != selectedMemo) {
+            memoText.setText(selectedMemo.getContent());
+        }
+        else {
+            memoText.setText("일정없음");
+            selectedMemo = new Memo(df.format(date));
+        }
     }
 
     @Override

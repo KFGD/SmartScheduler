@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import cnu.mobilesoftware.smartscheduler.DBHelper;
 import cnu.mobilesoftware.smartscheduler.R;
 
 public class EditMemoDialog extends Dialog {
@@ -31,6 +32,8 @@ public class EditMemoDialog extends Dialog {
         this.memo = memo;
         this.refreshOfActivity = refreshOfActivity;
     }
+
+
 
 
     @Override
@@ -67,12 +70,12 @@ public class EditMemoDialog extends Dialog {
 
         if(-1 == memo.getID()){
             memo.setContent(content);
-          //  DBHelper.getInstance().insertMemoinDB(memo);
+            DBHelper.getInstance().insertMemoInDB(memo);
             refreshOfActivity.Refresh();
             EditMemoDialog.this.dismiss();
         }else{
             memo.setContent(content);
-           // DBHelper.getInstance().updateMemoinDB(memo);
+            DBHelper.getInstance().updateMemoInDB(memo);
             refreshOfActivity.Refresh();
             EditMemoDialog.this.dismiss();
         }
@@ -83,7 +86,7 @@ public class EditMemoDialog extends Dialog {
             refreshOfActivity.Refresh();
             EditMemoDialog.this.dismiss();
         }else{
-            //DBHelper.getInstance().deleteMemoinDB(memo);
+            DBHelper.getInstance().deleteMemoinDB(memo);
             refreshOfActivity.Refresh();
             EditMemoDialog.this.dismiss();
         }

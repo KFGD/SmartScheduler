@@ -1,26 +1,43 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="cnu.mobilesoftware.smartscheduler.Fragment.TodayFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:text="오늘의 일정"/>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingRight="25dp"
+        android:paddingBottom="25dp"
+        android:background="@drawable/memo"
+        android:scrollbarStyle="insideOverlay"
+        style="@android:style/Widget.DeviceDefault.ScrollView">
 
     <LinearLayout
-        android:layout_marginTop="18dp"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/calendar"
         android:id="@+id/showSchedule"
-        android:weightSum="1">
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="35dp"
+        >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/todayText"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/memoToday"/>
     </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:orientation="vertical"
@@ -31,7 +48,6 @@
         android:id="@+id/showList">
 
         <ListView
-
             android:layout_width="wrap_content"
             android:layout_height="200dp"
             android:id="@+id/save_listView"
@@ -45,5 +61,15 @@
         android:text="이동"
         android:onClick="onClickGroupPage"
         android:layout_gravity="center_horizontal|bottom"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="165dp"
+        android:orientation="vertical"
+        android:id="@+id/todayLayout"
+
+        >
+
+    </LinearLayout>
 
 </FrameLayout>
