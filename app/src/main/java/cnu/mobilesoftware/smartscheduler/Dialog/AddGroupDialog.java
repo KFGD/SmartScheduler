@@ -21,6 +21,7 @@ import java.util.Calendar;
 
 import cnu.mobilesoftware.smartscheduler.R;
 import cnu.mobilesoftware.smartscheduler.SmartSchedulerApplication;
+import cnu.mobilesoftware.smartscheduler.WebDBHelper;
 
 /**
  * Created by GwanYongKim on 2016-11-11.
