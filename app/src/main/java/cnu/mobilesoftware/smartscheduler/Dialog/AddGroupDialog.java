@@ -66,23 +66,14 @@ public class AddGroupDialog extends AppCompatDialogFragment implements View.OnCl
                     final String group_title = tie_group_name.getText().toString();
                     Log.i("info", "UUID: " + uuid + " / GROUP_END_DAY: " + group_endDay + " / GROUP_TITLE: " + group_title);
                     new AsyncTask<Void, Void, String>(){
-                        //ProgressDialog pd = new ProgressDialog(AddGroupDialog.this);
                         @Override
                         protected String doInBackground(Void... voids) {
-                            webdb.INSERTGROUPINFO(group_title, "none", group_endDay);
-                            webdb.INSERTUSERGROUP(uuid, group_title);
+                            webdb.MAKEGROUP(group_endDay, uuid);
                             return null;
-                        }
-                        @Override
-                        protected void onPreExecute() {
-                            super.onPreExecute();
-                            //pd.setMessage("기다려");
-                            //pd.show();
                         }
                         @Override
                         protected void onPostExecute(String s) {
                             super.onPostExecute(s);
-                            //pd.dismiss();
                         }
                     }.execute();
                     dismiss();
