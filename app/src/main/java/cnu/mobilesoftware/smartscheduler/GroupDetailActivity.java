@@ -14,8 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.transition.Transition;
 import android.view.Menu;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +29,15 @@ import cnu.mobilesoftware.smartscheduler.Fragment.NoticeFragment;
 import cnu.mobilesoftware.smartscheduler.Fragment.PostFragment;
 import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
 
-public class GroupDetailActivity extends AppCompatActivity {
+public class GroupDetailActivity extends AppCompatActivity{
 
     GroupItem groupItem;
+    FloatingActionMenu fabMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_detail);
-
 
         final ImageView memberImage = (ImageView)findViewById(R.id.group_image);
 
@@ -64,11 +69,25 @@ public class GroupDetailActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle(groupItem.group_title);
         memberImage.setImageResource(groupItem.img_res);
 
+        fabMenu = (FloatingActionMenu)findViewById(R.id.fab_menu);
 
         //ViewPager
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
         setUpViewPagerAndTabLayout(viewPager, tabLayout);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 0) fabMenu.setVisibility(View.VISIBLE);
+                else fabMenu.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
     }
 
     private void setUpViewPagerAndTabLayout(ViewPager viewPager, TabLayout tabLayout){

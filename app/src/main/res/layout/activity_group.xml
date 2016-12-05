@@ -39,17 +39,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
-        android:layout_margin="@dimen/activity_horizontal_margin">
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        app:menu_showShadow="true">
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_create_white_24dp"
+            app:fab_label="그룹 생성하기"
             android:onClick="onClickAddGroup"/>
         <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_people_white_24dp"
-            android:onClick="onClickEnterGroup"/>
+            android:onClick="onClickEnterGroup"
+            app:fab_label="그룹 참여하기"/>
+        <com.github.clans.fab.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_cached_white_24dp"
+            android:onClick="onClickSyncSchedule"
+            app:fab_label="시간표 서버 전송"/>
     </com.github.clans.fab.FloatingActionMenu>
 </android.support.design.widget.CoordinatorLayout>
