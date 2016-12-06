@@ -4,10 +4,40 @@
     android:layout_height="match_parent"
     tools:context="cnu.mobilesoftware.smartscheduler.Fragment.PostFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="12"
+            android:background="@color/black">
+            <TextView
+                android:id="@+id/showchat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray"
+                android:textColor="@color/red"
+                android:textSize="20dp"/>
+        </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom">
+            <EditText
+                android:id="@+id/chatinput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"/>
+            <Button
+                android:id="@+id/sendChat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="전송" />
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>
