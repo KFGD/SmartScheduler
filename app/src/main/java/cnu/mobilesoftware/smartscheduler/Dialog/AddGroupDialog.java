@@ -71,13 +71,12 @@ public class AddGroupDialog extends AppCompatDialogFragment implements View.OnCl
                             webdb.MAKEGROUP(group_endDay, uuid);
                             return null;
                         }
-<<<<<<< HEAD
-=======
+
                         @Override
                         protected void onPostExecute(String s) {
                             super.onPostExecute(s);
                         }
->>>>>>> origin/master
+
                     }.execute();
                     dismiss();
                 }
