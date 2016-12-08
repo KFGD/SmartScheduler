@@ -18,49 +18,6 @@ public class WebDBHelper {
     String temp;
     public WebDBHelper(){}
 
-    public static synchronized StringBuilder SELECTWEBDB(String query, String paraid) {//all
-        StringBuilder stringBuilder = null;
-        HttpURLConnection conn = null;
-        BufferedReader reader = null;
-        try{
-            stringBuilder = new StringBuilder();
-            String link = "http://52.79.193.88/SmartScheduler/"+query+".php";
-            String id = paraid;
-            String data = null;
-            if(query.equals("SELECTUSERINFO")||query.equals("SELECTUSERPLAN")||query.equals("SELECTUSERGROUP"))
-                data = URLEncoder.encode("uuid", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
-            if(query.equals("SELECTGROUPINFO")||query.equals("SELECTBOARD"))
-                data = URLEncoder.encode("groupid", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
-            URL url = new URL(link);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(10000);
-            conn.setReadTimeout(10000);
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            OutputStream wr = conn.getOutputStream();
-            wr.write(data.getBytes("UTF-8"));
-            wr.flush();
-            wr.close();
-            Log.d("asd", "asd");
-            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line = null;
-            while ((line = reader.readLine()) != null)
-                stringBuilder.append(line);
-        }catch (Exception e){
-            stringBuilder = null;
-        }finally{
-            if(conn != null)
-                conn.disconnect();
-            if(reader != null)
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-        }
-        return stringBuilder;
-    }
     //MAKE GROUP
     public static synchronized StringBuilder MAKEGROUP(String paradeadline, String parauuid){
         StringBuilder stringBuilder = null;
@@ -100,6 +57,52 @@ public class WebDBHelper {
         }
         return stringBuilder;
     }
+
+    public static synchronized StringBuilder SELECTWEBDB(String query, String paraid) {//all
+        StringBuilder stringBuilder = null;
+        HttpURLConnection conn = null;
+        BufferedReader reader = null;
+        try{
+            stringBuilder = new StringBuilder();
+            String link = "http://52.79.193.88/SmartScheduler/"+query+".php";
+            String id = paraid;
+            String data = null;
+            if(query.equals("SELECTUSERINFO")||query.equals("SELECTUSERPLAN")||query.equals("SELECTUSERGROUP"))
+                data = URLEncoder.encode("uuid", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
+            if(query.equals("SELECTGROUPINFO")||query.equals("SELECTBOARD"))
+                data = URLEncoder.encode("groupid", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
+            Log.d("fuck", query);
+            URL url = new URL(link);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(10000);
+            conn.setReadTimeout(10000);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            OutputStream wr = conn.getOutputStream();
+            wr.write(data.getBytes("UTF-8"));
+            wr.flush();
+            wr.close();
+            Log.d("asd", "asd");
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = null;
+            while ((line = reader.readLine()) != null)
+                stringBuilder.append(line);
+        }catch (Exception e){
+            stringBuilder = null;
+        }finally{
+            if(conn != null)
+                conn.disconnect();
+            if(reader != null)
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+        return stringBuilder;
+    }
+
     public static synchronized StringBuilder INSERTUSERINFO(String parauuid, String paraname){
         StringBuilder stringBuilder = null;
         HttpURLConnection conn = null;
@@ -262,19 +265,17 @@ public class WebDBHelper {
         }
         return stringBuilder;
     }
-    public static synchronized StringBuilder INSERTBOARD(String paragroupid, String paraname, String paratitle, String paracontent){
+    public static synchronized StringBuilder INSERTBOARD(String paragroupid, String paraname, String paracontent){
         StringBuilder stringBuilder = null;
         HttpURLConnection conn = null;
         BufferedReader reader = null;
         try{
             String groupid = paragroupid;
             String name = paraname;
-            String title = paratitle;
             String content = paracontent;
             String link="http://52.79.193.88/SmartScheduler/INSERTBOARD.php";
             String data  = URLEncoder.encode("groupid", "UTF-8") + "=" + URLEncoder.encode(groupid, "UTF-8");
             data  += "&" + URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(name, "UTF-8");
-            data  += "&" + URLEncoder.encode("title", "UTF-8") + "=" + URLEncoder.encode(title, "UTF-8");
             data  += "&" + URLEncoder.encode("content", "UTF-8") + "=" + URLEncoder.encode(content, "UTF-8");
             URL url = new URL(link);
             conn = (HttpURLConnection) url.openConnection();
