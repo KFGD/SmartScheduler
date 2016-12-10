@@ -1,4 +1,5 @@
 package cnu.mobilesoftware.smartscheduler.Fragment;
+import cnu.mobilesoftware.smartscheduler.GroupDetailActivity;
 import cnu.mobilesoftware.smartscheduler.SmartSchedulerApplication;
 
 import android.app.ProgressDialog;
@@ -37,13 +38,15 @@ import cnu.mobilesoftware.smartscheduler.WebDBHelper;
 public class PostFragment extends Fragment implements ITitle{
 
     private final String mTitle = "Post";
+    private GroupDetailActivity ownerActivity;
     private WebDBHelper webdb;
     private EditText chatinput;
     private Button sendchat;
     private ListView showchat;
     private ChatAdapter chatAdapter;
-    public static PostFragment newInstance(){
+    public static PostFragment newInstance(GroupDetailActivity ownerActivity){
         PostFragment fragment = new PostFragment();
+        fragment.ownerActivity = ownerActivity;
         return fragment;
     }
     public PostFragment() {
@@ -63,7 +66,7 @@ public class PostFragment extends Fragment implements ITitle{
                 while (true) {
                     try {
                         handler.sendMessage(handler.obtainMessage());
-                        Thread.sleep(1000);
+                        Thread.sleep(3000);
                     } catch (Throwable t) {
                     }
                 }
@@ -84,7 +87,6 @@ public class PostFragment extends Fragment implements ITitle{
         sendchat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String uuid = SmartSchedulerApplication.getUUID();
                 final String content = chatinput.getText().toString();
                 if(content.equals(""))
                     return;
@@ -92,7 +94,7 @@ public class PostFragment extends Fragment implements ITitle{
                     ProgressDialog pd = new ProgressDialog(getContext());
                     @Override
                     protected String doInBackground(Void... voids) {
-                        StringBuilder stringBuilder = webdb.INSERTBOARD("groupid", uuid, content);
+                        StringBuilder stringBuilder = webdb.INSERTBOARD("groupid", ownerActivity.getName(), content);
                         String text = "";
                         if(stringBuilder != null)
                             text = stringBuilder.toString();
@@ -107,7 +109,6 @@ public class PostFragment extends Fragment implements ITitle{
 
     private void UpdateChat(){
         new AsyncTask<Void, Void, String>(){
-            ProgressDialog pd = new ProgressDialog(getContext());
             @Override
             protected String doInBackground(Void... voids) {
                 StringBuilder stringBuilder = webdb.SELECTWEBDB("SELECTBOARD", "groupid");
@@ -130,9 +131,13 @@ public class PostFragment extends Fragment implements ITitle{
                         namearray.add(j.getString("name"));
                         contentarray.add(j.getString("content"));
                     }
+
+                    ChatAdapter oldchat = (ChatAdapter)showchat.getAdapter();
                     ChatAdapter chatchat = new ChatAdapter(getContext(), 0, namearray, contentarray);
-                    showchat.setAdapter(chatchat);
-                    showchat.setSelection(showchat.getAdapter().getCount()-1);
+                    //if(!oldchat.equals(chatchat)) {
+                        showchat.setAdapter(chatchat);
+                        showchat.setSelection(showchat.getAdapter().getCount() - 1);
+                    //}
                 }catch (Exception e){}
             }
         }.execute();
