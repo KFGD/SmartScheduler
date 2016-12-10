@@ -141,14 +141,12 @@ public class WebDBHelper {
         return stringBuilder;
     }
 
-    public static synchronized StringBuilder INSERTUSERPLAN(String parajson){
+    public static synchronized StringBuilder INSERTUSERPLAN(String data){
         StringBuilder stringBuilder = null;
         HttpURLConnection conn = null;
         BufferedReader reader = null;
         try{
-            String json = parajson;
             String link="http://52.79.193.88/SmartScheduler/INSERTUSERPLAN.php";
-            String data  = URLEncoder.encode("json", "UTF-8") + "=" + URLEncoder.encode(json, "UTF-8");
             URL url = new URL(link);
             conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(10000);
