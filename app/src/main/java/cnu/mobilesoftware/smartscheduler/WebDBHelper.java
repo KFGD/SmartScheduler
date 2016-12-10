@@ -298,5 +298,44 @@ public class WebDBHelper {
         }
         return stringBuilder;
     }
+    public static synchronized StringBuilder INSERTNOTICE(String paragroupid, String paradate, String paratiem, String paratopic){
+        StringBuilder stringBuilder = null;
+        HttpURLConnection conn = null;
+        BufferedReader reader = null;
+        try{
+            String link="http://52.79.193.88/SmartScheduler/INSERTNOTICE.php";
+            String data  = URLEncoder.encode("groupid", "UTF-8") + "=" + URLEncoder.encode(paragroupid, "UTF-8");
+            data  += "&" + URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(paradate, "UTF-8");
+            data  += "&" + URLEncoder.encode("time", "UTF-8") + "=" + URLEncoder.encode(paratiem, "UTF-8");
+            data  += "&" + URLEncoder.encode("topic", "UTF-8") + "=" + URLEncoder.encode(paratopic, "UTF-8");
+            URL url = new URL(link);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(10000);
+            conn.setReadTimeout(10000);
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            OutputStream wr = conn.getOutputStream();
+            wr.write(data.getBytes("UTF-8"));
+            wr.flush();
+            wr.close();
+            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = null;
+            while ((line = reader.readLine()) != null)
+                stringBuilder.append(line);
+        }catch (Exception e){
+            stringBuilder = null;
+        }finally{
+            if(conn != null)
+                conn.disconnect();
+            if(reader != null)
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+        return stringBuilder;
+    }
 }
 

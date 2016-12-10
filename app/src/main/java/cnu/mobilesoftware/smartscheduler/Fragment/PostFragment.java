@@ -141,6 +141,7 @@ public class PostFragment extends Fragment implements ITitle{
                 }catch (Exception e){}
             }
         }.execute();
+
     }
 
     @Override
