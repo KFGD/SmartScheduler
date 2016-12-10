@@ -2,6 +2,7 @@ package cnu.mobilesoftware.smartscheduler.Dialog;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -20,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import cnu.mobilesoftware.smartscheduler.R;
+import cnu.mobilesoftware.smartscheduler.WebDBHelper;
 
 /**
  * Created by GwanYongKim on 2016-12-10.
@@ -27,10 +29,11 @@ import cnu.mobilesoftware.smartscheduler.R;
 
 public class AddNoticeDialog extends AppCompatDialogFragment implements View.OnClickListener, View.OnFocusChangeListener{
 
-    TextInputLayout til_meeting_day, til_meeting_time_hour, til_meeting_time_min;
-    TextInputEditText tie_meeting_day, tie_meeting_time_hour, tie_meeting_time_min;
+    TextInputLayout til_meeting_day, til_meeting_time_hour, til_meeting_time_min, til_meeting_topic;
+    TextInputEditText tie_meeting_day, tie_meeting_time_hour, tie_meeting_time_min, tie_meeting_topic;
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private WebDBHelper webdb;
 
     @Nullable
     @Override
@@ -46,6 +49,7 @@ public class AddNoticeDialog extends AppCompatDialogFragment implements View.OnC
         switch (view.getId()){
             case R.id.ib_meeting_day: onClickCalendarImgBtn(tie_meeting_day); break;
             case R.id.ib_meeting_time: onClickTimeImgBtn(tie_meeting_time_hour, tie_meeting_time_min); break;
+            case R.id.btn_check:onClickCheckBtn();break;
         }
     }
 
@@ -82,7 +86,23 @@ public class AddNoticeDialog extends AppCompatDialogFragment implements View.OnC
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
     }
-
+    private void onClickCheckBtn(){
+        final String date = tie_meeting_day.getText().toString();
+        final String time = tie_meeting_time_hour.getText().toString() +" : "+ tie_meeting_time_min.getText().toString();
+        final String topic = tie_meeting_topic.getText().toString();
+        Log.d("fuck", date+", "+time+", "+topic);
+        new AsyncTask<Void, Void, String>(){
+            @Override
+            protected String doInBackground(Void... voids) {
+                StringBuilder stringBuilder = webdb.INSERTNOTICE(groupid, date, time, topic);
+                String text = "";
+                if(stringBuilder != null)
+                    text = stringBuilder.toString();
+                return text;
+            }
+        }.execute();
+        dismiss();
+    }
     private void convertNumberToDate(TextInputEditText textInputEditText) {
         String str = textInputEditText.getText().toString();
         if(8!=str.length())
@@ -111,15 +131,20 @@ public class AddNoticeDialog extends AppCompatDialogFragment implements View.OnC
         til_meeting_time_hour.setHint("시");
         til_meeting_time_min = (TextInputLayout)view.findViewById(R.id.til_meeting_time_min);
         til_meeting_time_min.setHint("분");
+        til_meeting_topic = (TextInputLayout)view.findViewById(R.id.til_meeting_topic);
 
         tie_meeting_day = (TextInputEditText)view.findViewById(R.id.tie_meeting_day);
         tie_meeting_day.setText(date);
         tie_meeting_day.setOnFocusChangeListener(this);
         tie_meeting_time_hour = (TextInputEditText)view.findViewById(R.id.tie_meeting_time_hour);
         tie_meeting_time_min = (TextInputEditText)view.findViewById(R.id.tie_meeting_time_min);
+        tie_meeting_topic = (TextInputEditText)view.findViewById(R.id.tie_meeting_topic);
 
         view.findViewById(R.id.ib_meeting_day).setOnClickListener(this);
         view.findViewById(R.id.ib_meeting_time).setOnClickListener(this);
+        view.findViewById(R.id.btn_check).setOnClickListener(this);
+
+        webdb = new WebDBHelper();
     }
 
 }
