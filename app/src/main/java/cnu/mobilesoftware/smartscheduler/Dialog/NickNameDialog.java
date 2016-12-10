@@ -1,5 +1,6 @@
 package cnu.mobilesoftware.smartscheduler.Dialog;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -11,6 +12,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import cnu.mobilesoftware.smartscheduler.R;
+import cnu.mobilesoftware.smartscheduler.SmartSchedulerApplication;
+import cnu.mobilesoftware.smartscheduler.WebDBHelper;
 
 import static cnu.mobilesoftware.smartscheduler.R.id.tie_group_nickName;
 import static cnu.mobilesoftware.smartscheduler.R.id.til_group_nickName;
@@ -22,10 +25,11 @@ import static cnu.mobilesoftware.smartscheduler.R.id.til_group_nickName;
 public class NickNameDialog extends AppCompatDialogFragment implements View.OnClickListener {
 
 
-    LinearLayout linear_code, linear_name;
-    TextInputLayout textInputLayout;
-    TextInputEditText textInputNickName;
-    String nickName;
+    private LinearLayout linear_code, linear_name;
+    private TextInputLayout textInputLayout;
+    private TextInputEditText textInputNickName;
+    private WebDBHelper webdb;
+    private String nickName;
 
     public NickNameDialog() {
         // Required empty public constructor
@@ -37,6 +41,7 @@ public class NickNameDialog extends AppCompatDialogFragment implements View.OnCl
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.dialog_nickname, container, false);
+        webdb = new WebDBHelper();
         initializeWidget(view);
         return view;
     }
@@ -72,7 +77,17 @@ public class NickNameDialog extends AppCompatDialogFragment implements View.OnCl
             //GroupName 20글자 미만이 아닐 경우,
             bValue = ValidateGroupName();
             if (bValue) {
-                //Web에 nickname보낸다.
+                new AsyncTask<Void, Void, String>(){
+                    @Override
+                    protected String doInBackground(Void... voids) {
+                        String uuid = SmartSchedulerApplication.getUUID();
+                        StringBuilder stringBuilder = webdb.INSERTUSERINFO(uuid, nickName);
+                        String text = "";
+                        if(stringBuilder != null)
+                            text = stringBuilder.toString();
+                        return text;
+                    }
+                }.execute();
                 dismiss();
             }
         }
