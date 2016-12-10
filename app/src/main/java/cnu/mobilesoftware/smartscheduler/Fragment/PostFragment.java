@@ -87,6 +87,7 @@ public class PostFragment extends Fragment implements ITitle{
         sendchat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String uuid = SmartSchedulerApplication.getUUID();
                 final String content = chatinput.getText().toString();
                 if(content.equals(""))
                     return;
@@ -94,7 +95,7 @@ public class PostFragment extends Fragment implements ITitle{
                     ProgressDialog pd = new ProgressDialog(getContext());
                     @Override
                     protected String doInBackground(Void... voids) {
-                        StringBuilder stringBuilder = webdb.INSERTBOARD("groupid", ownerActivity.getName(), content);
+                        StringBuilder stringBuilder = webdb.INSERTBOARD("groupid", uuid, content);
                         String text = "";
                         if(stringBuilder != null)
                             text = stringBuilder.toString();
