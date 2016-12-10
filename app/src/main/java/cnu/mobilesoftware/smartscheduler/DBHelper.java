@@ -3,7 +3,6 @@ package cnu.mobilesoftware.smartscheduler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -233,6 +232,18 @@ public class DBHelper extends SQLiteOpenHelper{
         } catch (Exception e){
             Log.e("DB_ERROR", "upateMemoInDB");
         } finally{
+            closeResource(db);
+        }
+    }
+    public void deleteMemoinDB(Memo memo){
+        SQLiteDatabase db = null;
+        try{
+            db = getWritableDatabase();
+            db.delete(TableInfo.MEMO_ITEM_LIST.TABLE_NAME, TableInfo.MEMO_ITEM_LIST._ID + "=?", new String[]{String.valueOf(memo.getID())});
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e("error", "deleteMemoinDB Error");
+        }finally {
             closeResource(db);
         }
     }
