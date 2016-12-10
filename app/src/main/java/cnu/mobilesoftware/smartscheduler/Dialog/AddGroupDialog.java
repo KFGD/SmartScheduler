@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -67,16 +68,17 @@ public class AddGroupDialog extends AppCompatDialogFragment implements View.OnCl
                     Log.i("info", "UUID: " + uuid + " / GROUP_END_DAY: " + group_endDay + " / GROUP_TITLE: " + group_title);
                     new AsyncTask<Void, Void, String>(){
                         @Override
-                        protected String doInBackground(Void... voids) {
-                            webdb.MAKEGROUP(group_endDay, uuid);
-                            return null;
-                        }
-
-                        @Override
                         protected void onPostExecute(String s) {
                             super.onPostExecute(s);
                         }
-
+                        @Override
+                        protected String doInBackground(Void... voids) {
+                            StringBuilder stringBuilder = webdb.MAKEGROUP(group_endDay, uuid);
+                            String text = "";
+                            if(stringBuilder != null)
+                                text = stringBuilder.toString();
+                            return text;
+                        }
                     }.execute();
                     dismiss();
                 }

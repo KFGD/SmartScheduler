@@ -24,7 +24,6 @@ public class WebDBHelper {
         HttpURLConnection conn = null;
         BufferedReader reader = null;
         try{
-
             String link="http://52.79.193.88/SmartScheduler/MAKEGROUP.php";
             String data  = URLEncoder.encode("deadline", "UTF-8") + "=" + URLEncoder.encode(paradeadline, "UTF-8");
             data  += "&" + URLEncoder.encode("uuid", "UTF-8") + "=" + URLEncoder.encode(parauuid, "UTF-8");
@@ -39,6 +38,7 @@ public class WebDBHelper {
             wr.write(data.getBytes("UTF-8"));
             wr.flush();
             wr.close();
+            Log.d("fuck", paradeadline);
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = null;
             while ((line = reader.readLine()) != null)
@@ -83,7 +83,6 @@ public class WebDBHelper {
             wr.write(data.getBytes("UTF-8"));
             wr.flush();
             wr.close();
-            Log.d("asd", "asd");
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = null;
             while ((line = reader.readLine()) != null)

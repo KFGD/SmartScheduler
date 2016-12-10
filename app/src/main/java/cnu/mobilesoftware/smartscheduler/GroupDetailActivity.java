@@ -1,6 +1,8 @@
 package cnu.mobilesoftware.smartscheduler;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -16,6 +18,10 @@ import android.transition.Transition;
 import android.view.Menu;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +33,13 @@ import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
 public class GroupDetailActivity extends AppCompatActivity {
 
     GroupItem groupItem;
+    private WebDBHelper webdb;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_detail);
-
 
         final ImageView memberImage = (ImageView)findViewById(R.id.group_image);
 
@@ -45,18 +52,15 @@ public class GroupDetailActivity extends AppCompatActivity {
             //Transition exitTrans = new Fade();
             //Transition exitTrans = new Slide();
 
-
             Transition reenterTrans = new Explode();
             //Transition reenterTrans = new Fade();
             //Transition reenterTrans = new Slide();
-
 
             window.setExitTransition(exitTrans);
             window.setEnterTransition(reenterTrans);
             window.setReenterTransition(reenterTrans);
             //window.setTransitionBackgroundFadeDuration(2000);
         }
-
         final Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -64,18 +68,40 @@ public class GroupDetailActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle(groupItem.group_title);
         memberImage.setImageResource(groupItem.img_res);
 
-
         //ViewPager
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
         setUpViewPagerAndTabLayout(viewPager, tabLayout);
+        //get name by uuid
+        webdb = new WebDBHelper();
+        final String uuid = SmartSchedulerApplication.getUUID();
+        new AsyncTask<Void, Void, String>(){
+            ProgressDialog pd = new ProgressDialog(getApplicationContext());
+            @Override
+            protected String doInBackground(Void... voids) {
+                StringBuilder stringBuilder = webdb.SELECTWEBDB("SELECTUSERINFO", uuid);
+                String text = "";
+                if(stringBuilder != null)
+                    text = stringBuilder.toString();
+                return text;
+            }
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                if(s.equals(""))
+                    name = "NONAME";
+                else
+                    name = s;
+                Toast.makeText(getApplicationContext(), "Hi "+name, Toast.LENGTH_SHORT).show();
+            }
+        }.execute();
     }
 
     private void setUpViewPagerAndTabLayout(ViewPager viewPager, TabLayout tabLayout){
         //Setting ViewPager
         SectionsPagerAdapter sectionPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         sectionPagerAdapter.appendFragment(NoticeFragment.newInstance());
-        sectionPagerAdapter.appendFragment(PostFragment.newInstance());;
+        sectionPagerAdapter.appendFragment(PostFragment.newInstance(this));
         viewPager.setAdapter(sectionPagerAdapter);
         viewPager.setCurrentItem(0);
 
@@ -116,5 +142,8 @@ public class GroupDetailActivity extends AppCompatActivity {
         public int getCount() {
             return pageFragment.size();
         }
+    }
+    public String getName(){
+        return this.name;
     }
 }
