@@ -8,7 +8,7 @@ import android.os.Parcelable;
  */
 
 public class GroupItem implements Parcelable{
-    public int _id;
+    public String group_id;
     public String group_title = "";
     public int img_res = R.drawable.cat;
 
@@ -16,15 +16,20 @@ public class GroupItem implements Parcelable{
         this.group_title = group_title;
     }
 
+    public GroupItem(String group_id, String group_title){
+        this.group_id = group_id;
+        this.group_title = group_title;
+    }
+
     protected GroupItem(Parcel in) {
-        _id = in.readInt();
+        group_id = in.readString();
         group_title = in.readString();
         img_res = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(_id);
+        dest.writeString(group_id);
         dest.writeString(group_title);
         dest.writeInt(img_res);
     }

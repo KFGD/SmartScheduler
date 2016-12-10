@@ -20,6 +20,8 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import cnu.mobilesoftware.smartscheduler.DBHelper;
+import cnu.mobilesoftware.smartscheduler.GroupItem;
 import cnu.mobilesoftware.smartscheduler.R;
 import cnu.mobilesoftware.smartscheduler.SmartSchedulerApplication;
 import cnu.mobilesoftware.smartscheduler.WebDBHelper;
@@ -70,13 +72,16 @@ public class AddGroupDialog extends AppCompatDialogFragment implements View.OnCl
                         @Override
                         protected void onPostExecute(String s) {
                             super.onPostExecute(s);
+                            GroupItem groupItem = new GroupItem(s, group_title);
+                            DBHelper.getInstance().insertGroupItemInDB(groupItem);
                         }
                         @Override
                         protected String doInBackground(Void... voids) {
                             StringBuilder stringBuilder = webdb.MAKEGROUP(group_endDay, uuid);
                             String text = "";
-                            if(stringBuilder != null)
+                            if(stringBuilder != null) {
                                 text = stringBuilder.toString();
+                            }
                             return text;
                         }
                     }.execute();

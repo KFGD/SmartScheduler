@@ -164,7 +164,6 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
 
     private void refreshMemoList(){
         memoList = DBHelper.getInstance().getMemoListFromDB();
-        Log.d("getMemoList","getMemolist"+memoList.values());
         if(null == memoList)
             memoList = new HashMap<>();
 

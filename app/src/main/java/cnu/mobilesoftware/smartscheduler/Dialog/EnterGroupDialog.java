@@ -6,13 +6,17 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatDialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import java.util.concurrent.ExecutionException;
+
 import cnu.mobilesoftware.smartscheduler.R;
+import cnu.mobilesoftware.smartscheduler.WebDBHelper;
 
 public class EnterGroupDialog extends AppCompatDialogFragment implements View.OnClickListener{
 
@@ -69,9 +73,26 @@ public class EnterGroupDialog extends AppCompatDialogFragment implements View.On
     }
 
     private boolean ValidateGroupCode(){
-        boolean bReturn = true;
+        Boolean bReturn = true;
+        final String code = tie_group_code.getText().toString();
 
-        //Http Group Code가 있는 지 확인하기 위한 통신
+        try {
+            Boolean value = new AsyncTask<Void, Void, Boolean>(){
+                @Override
+                protected Boolean doInBackground(Void... strings) {
+                    Boolean bool = true;
+                    if(WebDBHelper.SELECTWEBDB("SELECTGROUPINFO", code).length() == 0) {
+                        bool = false;
+                    }
+                    Log.i("info", "1");
+                    return bool;
+                }
+            }.execute().get();
+            Log.i("info", "2");
+            bReturn = value;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return bReturn;
     }
@@ -108,6 +129,7 @@ public class EnterGroupDialog extends AppCompatDialogFragment implements View.On
                 bValue = ValidateGroupName();
                 if (bValue) {
                     //Http 그룹 참여
+
                 }
             }
                 break;
