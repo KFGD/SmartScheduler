@@ -235,5 +235,17 @@ public class DBHelper extends SQLiteOpenHelper{
             closeResource(db);
         }
     }
+    public void deleteMemoinDB(Memo memo){
+        SQLiteDatabase db = null;
+        try{
+            db = getWritableDatabase();
+            db.delete(TableInfo.MEMO_ITEM_LIST.TABLE_NAME, TableInfo.MEMO_ITEM_LIST._ID + "=?", new String[]{String.valueOf(memo.getID())});
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e("error", "deleteMemoinDB Error");
+        }finally {
+            closeResource(db);
+        }
+    }
 
 }
