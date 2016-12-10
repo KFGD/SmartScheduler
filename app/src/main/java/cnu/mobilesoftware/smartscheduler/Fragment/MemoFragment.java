@@ -1,10 +1,12 @@
 package cnu.mobilesoftware.smartscheduler.Fragment;
 
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,10 +48,10 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
     //Member of Widgets
     //CustomCalendarView calendarView;
     TextView memoText;
-    ImageButton memoBtn;
+    ImageButton memoBtn,memo_deleteBtn;
     Memo selectedMemo;
     String[] colorOfArray = new String[]{"#7784C2", "#C784C2", "#C7EBA8", "#71EBA8", "#7130A8", "#6D8FF5"};
-   // String[] colorOfArray = new String[]{"#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF"};
+    // String[] colorOfArray = new String[]{"#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF"};
 
     int count = 0;
 
@@ -76,6 +78,7 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
 
         memoText = (TextView)view.findViewById(R.id.memo_text);
         memoBtn = (ImageButton)view.findViewById(R.id.memo_btn);
+        memo_deleteBtn = (ImageButton)view.findViewById(R.id.memo_delete_btn);
 
         memoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +90,35 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
                 }
             }
         });
+
+        memo_deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alt_bld = new AlertDialog.Builder(getActivity());
+
+
+                alt_bld.setMessage("정말로 삭제하시겠습니까?").setNegativeButton("예",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                EditMemoDialog memo = new EditMemoDialog(getContext(), selectedMemo, MemoFragment.this);
+                                memo.onDeleteMemoButton();
+                            }
+                        })
+                        .setPositiveButton("아니오",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        // Action for 'Yes' Button
+                                        dialog.cancel();
+                                    }
+                                })
+                ;
+                AlertDialog alert = alt_bld.create();
+                alert.setTitle("삭제 버튼");
+                alert.show();
+            }
+        });
+
 
         refreshMemoList();
         decorators = new ArrayList();
@@ -116,6 +148,7 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
         selectedMemo = null;
         memoText.setText("");
         memoBtn.setVisibility(View.GONE);
+        memo_deleteBtn.setVisibility(View.GONE);
     }
 
     private void refreshMemoList(){
@@ -124,6 +157,9 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
         if(null == memoList)
             memoList = new HashMap<>();
     }
+
+
+
 
 
     @Override
@@ -135,21 +171,29 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
     public void onPause() {
         super.onPause();
     }
-
     @Override
     public void onDateSelected(Date date) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        //Toast.makeText(MainActivity.this, df.format(date), Toast.LENGTH_SHORT).show();
+
         memoBtn.setVisibility(View.VISIBLE);
         selectedMemo = memoList.get(df.format(date));
 
         if (null != selectedMemo) {
             memoText.setText(selectedMemo.getContent());
+            memo_deleteBtn.setVisibility(View.VISIBLE);
+        }
+        else{
+            memo_deleteBtn.setVisibility(View.INVISIBLE);
+            memoText.setText("일정없음");
+            selectedMemo = new Memo(df.format(date));
+        }
+/*        else  {
+            memo_deleteBtn.setVisibility(View.INVISIBLE);
         }
         else {
             memoText.setText("일정없음");
             selectedMemo = new Memo(df.format(date));
-        }
+        }*/
     }
 
     @Override
@@ -166,6 +210,8 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
 
     @Override
     public void Refresh() {
+
+        refreshMemoList();
         resetSelectedMemo();
     }
 

@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,14 +58,8 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
         memoText = (TextView) view.findViewById(R.id.memoToday);
         linearLayoutShowScheudle = (LinearLayout) view.findViewById(R.id.showSchedule);
         todayLayout = (LinearLayout) view.findViewById(R.id.todayLayout);
-        todayText.bringToFront();
-        refreshMemoList();
-        refreshScheduleData();
-        refreshScheduleMemo();
 
-        //전광판에 띄우는 함수
-        showScheudler();
-
+        Refresh();
 
         return view;
     }
@@ -116,19 +109,25 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
     }
 
     private void showScheudler() {
-        for (int i = 0; i < todaySchedule.size(); i++) {
-            int startTime = todaySchedule.get(i).startTime;
-            int endTime = todaySchedule.get(i).endTime;
-            String subjectName = todaySchedule.get(i).subjectName;
-            String professor = todaySchedule.get(i).professor;
-            String day = todaySchedule.get(i).day;
-            String show = "." + subjectName + " " + startTime + "시~" + endTime + "시 " + professor + "교수님";
-            nameList.add(++num + show);
+        if(selectedMemo == null){
+            nameList.add("\n" + "오늘의 일정:" + "없음");
+            getTextList();
+            nameList.clear();
+        }else {
+            for (int i = 0; i < todaySchedule.size(); i++) {
+                int startTime = todaySchedule.get(i).startTime;
+                int endTime = todaySchedule.get(i).endTime;
+                String subjectName = todaySchedule.get(i).subjectName;
+                String professor = todaySchedule.get(i).professor;
+                String day = todaySchedule.get(i).day;
+                String show = "." + subjectName + " " + startTime + "시~" + endTime + "시 " + professor + "교수님";
+                nameList.add(++num + show);
 
+            }
+            nameList.add("\n" + "오늘의 일정:" + selectedMemo.getContent());
+            getTextList();
+            nameList.clear();
         }
-        nameList.add("\n" + "오늘의 일정:" + selectedMemo.getContent());
-
-        getTextList();
     }
 
 
@@ -141,7 +140,6 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
     }
 
     private void refreshMemoList() {
-        Log.d("refresh", "refresh");
         memoList = DBHelper.getInstance().getMemoListFromDB();
         if (null == memoList)
             memoList = new HashMap<>();
@@ -151,6 +149,7 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
     //배열 리스트 가져오기
     private void getTextList() {
         int i;
+////////////////////////////삭제영역///////////////////////////////////
         linearLayoutShowScheudle.removeAllViews();  //기존 모든 뷰를 모두 지운다.
 
         for (i = 0; i < nameList.size(); i++) {
@@ -168,8 +167,8 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
             linearLayoutShowScheudle.addView(todayText);  //linearLayout01 위에 생성
 
         }
-    }
 
+    }
     @Override
     public String getTitle() {
         return mTitle;
@@ -178,6 +177,10 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
     @Override
     public void Refresh() {
 
+        refreshMemoList();
+        refreshScheduleData();
+        refreshScheduleMemo();
+        showScheudler();
     }
 
 

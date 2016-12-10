@@ -252,5 +252,4 @@ public class DBHelper extends SQLiteOpenHelper{
             closeResource(db);
         }
     }
-
 }

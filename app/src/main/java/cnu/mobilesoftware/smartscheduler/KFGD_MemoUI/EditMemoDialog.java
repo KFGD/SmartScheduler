@@ -44,21 +44,27 @@ public class EditMemoDialog extends Dialog {
         if(null != memo.getContent()){
             editText.setText(memo.getContent());
         }
-        ((ImageButton)findViewById(R.id.btn_save)).setOnClickListener(new View.OnClickListener() {
+
+        ImageButton insertMemoButton = (ImageButton)findViewById(R.id.btn_save);
+        ImageButton cancelDialogBtn = (ImageButton) findViewById(R.id.btn_delete);
+
+        insertMemoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onSaveMemo();
             }
         });
 
-        ImageButton deleteBtn = (ImageButton) findViewById(R.id.btn_delete);
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
+        cancelDialogBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onDeleteMemo();
+                onCancelDialog();
             }
         });
         editText.addTextChangedListener(new DialogTextWatcher());
+
+
+
     }
 
     private void onSaveMemo(){
@@ -81,7 +87,17 @@ public class EditMemoDialog extends Dialog {
         }
     }
 
-    private void onDeleteMemo(){
+    private void onCancelDialog(){
+        if(-1 == memo.getID()){
+            refreshOfActivity.Refresh();
+            EditMemoDialog.this.dismiss();
+        }else{
+            refreshOfActivity.Refresh();
+            EditMemoDialog.this.dismiss();
+        }
+    }
+
+    public void onDeleteMemoButton(){
         if(-1 == memo.getID()){
             refreshOfActivity.Refresh();
             EditMemoDialog.this.dismiss();
@@ -115,4 +131,5 @@ public class EditMemoDialog extends Dialog {
             }
         }
     }
+
 }

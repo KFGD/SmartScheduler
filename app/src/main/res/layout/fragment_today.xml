@@ -9,34 +9,34 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:paddingRight="25dp"
         android:paddingBottom="25dp"
-        android:background="@drawable/memo"
+        android:background="@drawable/memo2"
         android:scrollbarStyle="insideOverlay"
         style="@android:style/Widget.DeviceDefault.ScrollView">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/showSchedule"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="35dp"
-        >
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/todayText"
-            />
+            android:orientation="vertical"
+            android:id="@+id/showSchedule"
+            android:layout_marginTop="70dp"
+            android:layout_marginLeft="35dp"
+            >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/todayText"
+                />
 
-            android:id="@+id/memoToday"/>
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:id="@+id/memoToday"/>
+        </LinearLayout>
+
     </ScrollView>
 
     <LinearLayout
