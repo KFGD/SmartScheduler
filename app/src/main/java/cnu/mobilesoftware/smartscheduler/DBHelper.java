@@ -3,7 +3,6 @@ package cnu.mobilesoftware.smartscheduler;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -180,10 +179,12 @@ public class DBHelper extends SQLiteOpenHelper{
 
     public HashMap<String, Memo> getMemoListFromDB(){
         HashMap<String, Memo> memoList = null;
+        Log.d("getmemo","getmemo");
+
         SQLiteDatabase db = null;
         Cursor cursor = null;
         try{
-            //String[] columnNames = {"datetime", "content"};
+           // String[] columnNames = {"DATE_TIME", "CONTENT"};
             db = getReadableDatabase();
             cursor = db.query(TableInfo.MEMO_ITEM_LIST.TABLE_NAME, null, null, null, null, null, null);
             memoList = new HashMap<>();
@@ -206,6 +207,7 @@ public class DBHelper extends SQLiteOpenHelper{
 
     public void insertMemoInDB(Memo memo){
         SQLiteDatabase db = null;
+        Log.d("memoContent","memo::"+memo.getContent());
         try{
             db = getWritableDatabase();
             ContentValues contentValues = new ContentValues();
@@ -221,6 +223,7 @@ public class DBHelper extends SQLiteOpenHelper{
 
     public void updateMemoInDB(Memo memo){
         SQLiteDatabase db = null;
+        Log.d("memoContent","memo::"+memo.getContent());
         try{
             db = getWritableDatabase();
             ContentValues contentValues = new ContentValues();
@@ -233,6 +236,19 @@ public class DBHelper extends SQLiteOpenHelper{
         } catch (Exception e){
             Log.e("DB_ERROR", "upateMemoInDB");
         } finally{
+            closeResource(db);
+        }
+    }
+
+    public void deleteMemoinDB(Memo memo){
+        SQLiteDatabase db = null;
+        try{
+            db = getWritableDatabase();
+            db.delete(TableInfo.MEMO_ITEM_LIST.TABLE_NAME, TableInfo.MEMO_ITEM_LIST._ID + "=?", new String[]{String.valueOf(memo.getID())});
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e("error", "deleteMemoinDB Error");
+        }finally {
             closeResource(db);
         }
     }
