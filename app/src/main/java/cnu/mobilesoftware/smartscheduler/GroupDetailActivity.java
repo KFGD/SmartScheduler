@@ -14,17 +14,16 @@ import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.transition.Transition;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cnu.mobilesoftware.smartscheduler.Dialog.AddGroupDialog;
 import cnu.mobilesoftware.smartscheduler.Fragment.NoticeFragment;
 import cnu.mobilesoftware.smartscheduler.Fragment.PostFragment;
 import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
@@ -110,8 +109,12 @@ public class GroupDetailActivity extends AppCompatActivity{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.sample_actions, menu);
         return true;
+    }
+
+    public void onClickAddNotice(View view){
+        AddGroupDialog addGroupDialog = new AddGroupDialog();
+        addGroupDialog.show(getSupportFragmentManager(), "");
     }
 
     public final class SectionsPagerAdapter extends FragmentPagerAdapter {
