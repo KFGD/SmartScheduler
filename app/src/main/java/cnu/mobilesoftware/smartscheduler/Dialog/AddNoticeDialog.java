@@ -87,6 +87,7 @@ public class AddNoticeDialog extends AppCompatDialogFragment implements View.OnC
         datePickerDialog.show();
     }
     private void onClickCheckBtn(){
+        final String groupid = "sibarama";
         final String date = tie_meeting_day.getText().toString();
         final String time = tie_meeting_time_hour.getText().toString() +" : "+ tie_meeting_time_min.getText().toString();
         final String topic = tie_meeting_topic.getText().toString();
