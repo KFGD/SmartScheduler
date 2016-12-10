@@ -19,13 +19,15 @@
             app:dayOfWeekTextColor="@color/black"
             app:disabledDayBackgroundColor="@color/off_white"
             app:disabledDayTextColor="@color/gray"
-            app:selectedDayBackgroundColor="@color/blue"
+            app:selectedDayBackgroundColor="@color/gray"
             app:titleLayoutBackgroundColor="@color/white"
             app:weekLayoutBackgroundColor="@color/white"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
         android:background="@drawable/main_memo"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -39,9 +41,10 @@
             android:minWidth="250dp">
             <TextView
                 android:id="@+id/memo_text"
+                android:layout_marginBottom="150dp"
                 android:layout_width="200dp"
                 android:layout_height="100dp"
-                android:textColor="#FFFFFF"
+                android:textColor="#00008B"
                 android:gravity="center_vertical"/>
             <ImageButton
                 android:id="@+id/memo_btn"
