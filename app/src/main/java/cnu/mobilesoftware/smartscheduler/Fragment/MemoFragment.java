@@ -33,6 +33,7 @@ import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
 import cnu.mobilesoftware.smartscheduler.KFGD_MemoUI.EditMemoDialog;
 import cnu.mobilesoftware.smartscheduler.KFGD_MemoUI.IRefresh;
 import cnu.mobilesoftware.smartscheduler.KFGD_MemoUI.Memo;
+import cnu.mobilesoftware.smartscheduler.MainActivity;
 import cnu.mobilesoftware.smartscheduler.R;
 
 public class MemoFragment extends Fragment implements ITitle, CalendarListener, IRefresh {
@@ -52,12 +53,20 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
     Memo selectedMemo;
     String[] colorOfArray = new String[]{"#7784C2", "#C784C2", "#C7EBA8", "#71EBA8", "#7130A8", "#6D8FF5"};
     // String[] colorOfArray = new String[]{"#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF"};
+    private MainActivity ownerActivity;
+    TodayFragment todayFragment;
 
     int count = 0;
 
 
-    public static MemoFragment newInstance() {
+//    public static MemoFragment newInstance() {
+//        MemoFragment fragment = new MemoFragment();
+//        return fragment;
+//    }
+
+    public static MemoFragment newInstance(MainActivity ownerActivity) {
         MemoFragment fragment = new MemoFragment();
+        fragment.ownerActivity = ownerActivity;
         return fragment;
     }
 
@@ -128,6 +137,8 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
         calendarView.refreshCalendar(currentCalendar);
         resetSelectedMemo();
 
+
+
         return view;
     }
 
@@ -156,6 +167,7 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
         Log.d("getMemoList","getMemolist"+memoList.values());
         if(null == memoList)
             memoList = new HashMap<>();
+
     }
 
 
@@ -213,6 +225,8 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
 
         refreshMemoList();
         resetSelectedMemo();
+        ownerActivity.refreshToday();
+
     }
 
     public class ColorDecorator implements DayDecorator {

@@ -30,8 +30,10 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
 
     private final String mTitle = "Today";
     private ArrayList<ScheduleItem> todaySchedule = new ArrayList<>();
-    TextView todayText, memoText;
+    TextView memoText;
     LinearLayout linearLayoutShowScheudle, todayLayout;
+
+
 
     ArrayList<String> nameList = new ArrayList<String>();      // 배열리스트(스트링)
     int num = 0;
@@ -48,13 +50,12 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_today, container, false);
-        todayText = (TextView) view.findViewById(R.id.todayText);
+       /// todayText = (TextView) view.findViewById(R.id.todayText);
         memoText = (TextView) view.findViewById(R.id.memoToday);
         linearLayoutShowScheudle = (LinearLayout) view.findViewById(R.id.showSchedule);
         todayLayout = (LinearLayout) view.findViewById(R.id.todayLayout);
@@ -158,15 +159,18 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
     //배열 리스트 가져오기
     private void getTextList() {
         int i;
+
 ////////////////////////////삭제영역///////////////////////////////////
         linearLayoutShowScheudle.removeAllViews();  //기존 모든 뷰를 모두 지운다.
 
+
         for (i = 0; i < nameList.size(); i++) {
-            todayText = new TextView(getActivity().getApplicationContext());
+            TextView todayText;
+            todayText = new TextView(getActivity());
             todayText.setText(nameList.get(i));  //배열리스트 이용
 //            textView01.setText( ++num + "-" + etName.getText().toString());
             todayText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
-            todayText.setTextColor(255);  //컬러변경
+           // todayText.setTextColor(255);  //컬러변경
             todayText.setTextColor(Color.parseColor("#0E0F00"));
             todayText.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL));
            /* LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -188,12 +192,12 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
 
     @Override
     public void Refresh() {
-
         refreshMemoList();
         refreshScheduleData();
         refreshScheduleMemo();
         showScheudler();
     }
+
 
 
 }

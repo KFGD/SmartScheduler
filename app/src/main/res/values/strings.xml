@@ -13,6 +13,8 @@
 
     <!--dialog_group_add-->
     <string name="form_group_title">그룹 이름</string>
+    <!-- dialog_nickname-->
+    <string name="form_nickname">닉네임</string>
 
     <!--dialog_group_enter-->
     <string name="form_group_code">그룹 코드</string>

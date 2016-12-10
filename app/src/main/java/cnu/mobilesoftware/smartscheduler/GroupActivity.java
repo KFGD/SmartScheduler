@@ -3,12 +3,12 @@ package cnu.mobilesoftware.smartscheduler;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import cnu.mobilesoftware.smartscheduler.Dialog.AddGroupDialog;
 import cnu.mobilesoftware.smartscheduler.Dialog.EnterGroupDialog;
+import cnu.mobilesoftware.smartscheduler.Dialog.NickNameDialog;
 
 public class GroupActivity extends AppCompatActivity {
 
@@ -52,6 +53,12 @@ public class GroupActivity extends AppCompatActivity {
     public void onClickEnterGroup(View view){
         FragmentManager fm = getSupportFragmentManager();
         EnterGroupDialog dialog = new EnterGroupDialog();
+        dialog.show(fm, "");
+    }
+
+    public void onClickNickName(View view){
+        FragmentManager fm = getSupportFragmentManager();
+        NickNameDialog dialog = new NickNameDialog();
         dialog.show(fm, "");
     }
 
