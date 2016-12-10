@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -37,32 +36,17 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
         setUpViewPagerAndTabLayout(viewPager, tabLayout);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
 
-            @Override
-            public void onPageSelected(int position) {
-                //1page 될떄 refresh 콜해
-
-
-                if (position == 1) {
-                    todayFragment.Refresh();
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                Log.d("state", "state" + state);
-            }
-        });
     }
 
-    private void setUpViewPagerAndTabLayout(ViewPager viewPager, TabLayout tabLayout) {
+    public void refreshToday(){
+        todayFragment.Refresh();
+    }
+
+    public void setUpViewPagerAndTabLayout(ViewPager viewPager, TabLayout tabLayout) {
         //Setting ViewPager
         SectionsPagerAdapter sectionPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        sectionPagerAdapter.appendFragment(MemoFragment.newInstance());
+        sectionPagerAdapter.appendFragment(MemoFragment.newInstance(this));
         sectionPagerAdapter.appendFragment(TodayFragment.newInstance());
         sectionPagerAdapter.appendFragment(SchedulerFragment.newInstance());
         viewPager.setAdapter(sectionPagerAdapter);

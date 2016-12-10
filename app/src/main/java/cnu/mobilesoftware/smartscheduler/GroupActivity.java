@@ -5,13 +5,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,17 +24,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import cnu.mobilesoftware.smartscheduler.Dialog.AddGroupDialog;
 import cnu.mobilesoftware.smartscheduler.Dialog.EnterGroupDialog;
+import cnu.mobilesoftware.smartscheduler.Dialog.NickNameDialog;
 import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.ScheduleItem;
 import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.SchedulerUtils;
 
@@ -75,7 +71,15 @@ public class GroupActivity extends AppCompatActivity {
         dialog.show(fm, "");
     }
 
+
+    public void onClickNickName(View view){
+        FragmentManager fm = getSupportFragmentManager();
+        NickNameDialog dialog = new NickNameDialog();
+        dialog.show(fm, "");
+    }
+
     public void onClickSyncSchedule(View view) {
+
         //시간표 서버에 전송
 
         final StringBuilder result = getStringScheduler();
