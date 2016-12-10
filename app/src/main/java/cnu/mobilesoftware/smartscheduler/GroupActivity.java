@@ -55,6 +55,10 @@ public class GroupActivity extends AppCompatActivity {
         dialog.show(fm, "");
     }
 
+    public void onClickSyncSchedule(View view){
+        //시간표 서버에 전송
+    }
+
     private class GroupViewAdapter extends RecyclerView.Adapter<ViewHolder>{
 
         private ArrayList<GroupItem> resources = new ArrayList<>();

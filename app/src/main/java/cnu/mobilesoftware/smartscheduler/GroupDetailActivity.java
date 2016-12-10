@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.transition.Transition;
 import android.view.Menu;
+import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -23,18 +24,22 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.github.clans.fab.FloatingActionMenu;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import cnu.mobilesoftware.smartscheduler.Dialog.AddGroupDialog;
 import cnu.mobilesoftware.smartscheduler.Fragment.NoticeFragment;
 import cnu.mobilesoftware.smartscheduler.Fragment.PostFragment;
 import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
 
-public class GroupDetailActivity extends AppCompatActivity {
+public class GroupDetailActivity extends AppCompatActivity{
 
     GroupItem groupItem;
     private WebDBHelper webdb;
     private String name;
+    FloatingActionMenu fabMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +73,13 @@ public class GroupDetailActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle(groupItem.group_title);
         memberImage.setImageResource(groupItem.img_res);
 
-        //ViewPager
+        fabMenu = (FloatingActionMenu)findViewById(R.id.fab_menu);
+
+       //ViewPager
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
         setUpViewPagerAndTabLayout(viewPager, tabLayout);
-        //get name by uuid
+       //get name by uuid
         webdb = new WebDBHelper();
         final String uuid = SmartSchedulerApplication.getUUID();
         new AsyncTask<Void, Void, String>(){
@@ -95,6 +102,19 @@ public class GroupDetailActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Hi "+name, Toast.LENGTH_SHORT).show();
             }
         }.execute();
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position == 0) fabMenu.setVisibility(View.VISIBLE);
+                else fabMenu.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
     }
 
     private void setUpViewPagerAndTabLayout(ViewPager viewPager, TabLayout tabLayout){
@@ -117,8 +137,12 @@ public class GroupDetailActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.sample_actions, menu);
         return true;
+    }
+
+    public void onClickAddNotice(View view){
+        AddGroupDialog addGroupDialog = new AddGroupDialog();
+        addGroupDialog.show(getSupportFragmentManager(), "");
     }
 
     public final class SectionsPagerAdapter extends FragmentPagerAdapter {
