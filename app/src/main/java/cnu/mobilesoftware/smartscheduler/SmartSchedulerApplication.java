@@ -35,7 +35,6 @@ public class SmartSchedulerApplication extends Application{
     public void onCreate(){
         super.onCreate();
         setDeviceUUID();
-        Log.i("info", mUUID);
     }
 
     private void setDeviceUUID(){
