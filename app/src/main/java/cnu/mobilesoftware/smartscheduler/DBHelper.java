@@ -28,10 +28,6 @@ public class DBHelper extends SQLiteOpenHelper{
         super(SmartSchedulerApplication.getContext(), DM_NAME, null, DB_VERSION);
     }
 
-    public DBHelper(Context context, String DBName){
-        super(context, DBName, null, 1);
-    }
-
     public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -66,11 +62,20 @@ public class DBHelper extends SQLiteOpenHelper{
                 .append(TableInfo.MEMO_ITEM_LIST.CONTENT + " TEXT")
                 .append(" );");
         sqLiteDatabase.execSQL(tableMemoItemList.toString());
+
+        StringBuilder tableGroupItemList = new StringBuilder();
+        tableGroupItemList.append(" CREATE TABLE " + TableInfo.GROUP_ITEM_LIST.TABLE_NAME)
+                .append(" (")
+                .append(TableInfo.GROUP_ITEM_LIST._ID + " INTEGER primary key autoincrement ,")
+                .append(TableInfo.GROUP_ITEM_LIST.GROUP_ID + " TEXT ,")
+                .append(TableInfo.GROUP_ITEM_LIST.GROUP_TITLE + " TEXT")
+                .append(" );");
+        sqLiteDatabase.execSQL(tableGroupItemList.toString());
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        onCreate(sqLiteDatabase);
+
     }
 
     public ArrayList<ScheduleItem> getScheduleItemWithDay_Tag(SchedulerUtils.DAY_TAG day_tag){
@@ -248,4 +253,50 @@ public class DBHelper extends SQLiteOpenHelper{
         }
     }
 
+    public void insertGroupItemInDB(GroupItem groupItem){
+        SQLiteDatabase db = null;
+        try{
+            db = getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(TableInfo.GROUP_ITEM_LIST.GROUP_ID, groupItem.group_id);
+            contentValues.put(TableInfo.GROUP_ITEM_LIST.GROUP_TITLE, groupItem.group_title);
+            db.insert(TableInfo.GROUP_ITEM_LIST.TABLE_NAME, null, contentValues);
+        } catch (Exception e){
+            Log.e("DB_ERROR", "insertGroupItemInDB");
+            e.printStackTrace();
+        } finally{
+            closeResource(db);
+        }
+    }
+
+    public ArrayList<GroupItem> getGroupItemInDB(){
+        ArrayList<GroupItem> items = new ArrayList<>();
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+
+        try{
+            db = getReadableDatabase();
+            cursor = db.query(
+                    TableInfo.GROUP_ITEM_LIST.TABLE_NAME,
+                    null,
+                    null,
+                    null,
+                    null, null, null
+            );
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()){
+                items.add(new GroupItem(
+                        cursor.getString(cursor.getColumnIndex(TableInfo.GROUP_ITEM_LIST.GROUP_ID)),
+                        cursor.getString(cursor.getColumnIndex(TableInfo.GROUP_ITEM_LIST.GROUP_TITLE))
+                ));
+                cursor.moveToNext();
+            }
+        }catch (Exception e){
+            Log.e("DB_ERROR", "getGroupItemInDB()");
+            e.printStackTrace();
+        }finally {
+            closeResource(db, cursor);
+        }
+        return items;
+    }
 }

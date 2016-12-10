@@ -25,4 +25,11 @@ public class TableInfo {
         public static final String DATE_TIME = "DATE_TIME";
         public static final String CONTENT = "CONTENT";
     }
+
+    public static final class GROUP_ITEM_LIST implements BaseColumns{
+        public static final String TABLE_NAME = "GROUP_ITEM_LIST";
+        public static final String _ID = "_id";
+        public static final String GROUP_ID = "GROUP_ID";
+        public static final String GROUP_TITLE = "GROUP_TITLE";
+    }
 }

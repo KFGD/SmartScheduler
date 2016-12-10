@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cnu.mobilesoftware.smartscheduler.Dialog.AddGroupDialog;
+import cnu.mobilesoftware.smartscheduler.Dialog.AddNoticeDialog;
 import cnu.mobilesoftware.smartscheduler.Fragment.NoticeFragment;
 import cnu.mobilesoftware.smartscheduler.Fragment.PostFragment;
 import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
@@ -141,8 +142,8 @@ public class GroupDetailActivity extends AppCompatActivity{
     }
 
     public void onClickAddNotice(View view){
-        AddGroupDialog addGroupDialog = new AddGroupDialog();
-        addGroupDialog.show(getSupportFragmentManager(), "");
+        AddNoticeDialog addNoticeDialog = new AddNoticeDialog();
+        addNoticeDialog.show(getSupportFragmentManager(), "");
     }
 
     public final class SectionsPagerAdapter extends FragmentPagerAdapter {
