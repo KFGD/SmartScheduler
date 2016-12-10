@@ -8,20 +8,20 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import cnu.mobilesoftware.smartscheduler.Fragment.MemoFragment;
 import cnu.mobilesoftware.smartscheduler.Fragment.SchedulerFragment;
 import cnu.mobilesoftware.smartscheduler.Fragment.TodayFragment;
 import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
-import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.ScheduleItem;
-import cnu.mobilesoftware.smartscheduler.KFGD_SchedulerUI.SchedulerUtils;
 
 public class MainActivity extends AppCompatActivity {
+
+    TodayFragment todayFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,26 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewPager);
         TabLayout tabLayout = (TabLayout)findViewById(R.id.tabLayout);
         setUpViewPagerAndTabLayout(viewPager, tabLayout);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //1page 될떄 refresh 콜해
+
+
+                if (position == 1) {
+                    todayFragment.Refresh();
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                Log.d("state", "state" + state);
+            }
+        });
     }
 
     private void setUpViewPagerAndTabLayout(ViewPager viewPager, TabLayout tabLayout){
@@ -55,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
             if(sectionPagerAdapter.getItem(i) instanceof ITitle)
                 tabLayout.getTabAt(i).setText(((ITitle) sectionPagerAdapter.getItem(i)).getTitle());
         }
+        todayFragment = (TodayFragment) sectionPagerAdapter.getItem(1);
+
     }
 
     public void onClickGroupPage(View view){

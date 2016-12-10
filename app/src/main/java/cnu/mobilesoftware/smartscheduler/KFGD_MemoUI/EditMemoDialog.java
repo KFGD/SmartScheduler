@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import cnu.mobilesoftware.smartscheduler.DBHelper;
 import cnu.mobilesoftware.smartscheduler.R;
 
 public class EditMemoDialog extends Dialog {
@@ -33,6 +34,8 @@ public class EditMemoDialog extends Dialog {
     }
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,21 +44,27 @@ public class EditMemoDialog extends Dialog {
         if(null != memo.getContent()){
             editText.setText(memo.getContent());
         }
-        ((ImageButton)findViewById(R.id.btn_save)).setOnClickListener(new View.OnClickListener() {
+
+        ImageButton insertMemoButton = (ImageButton)findViewById(R.id.btn_save);
+        ImageButton cancelDialogBtn = (ImageButton) findViewById(R.id.btn_delete);
+
+        insertMemoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onSaveMemo();
             }
         });
 
-        ImageButton deleteBtn = (ImageButton) findViewById(R.id.btn_delete);
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
+        cancelDialogBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onDeleteMemo();
+                onCancelDialog();
             }
         });
         editText.addTextChangedListener(new DialogTextWatcher());
+
+
+
     }
 
     private void onSaveMemo(){
@@ -67,23 +76,33 @@ public class EditMemoDialog extends Dialog {
 
         if(-1 == memo.getID()){
             memo.setContent(content);
-          //  DBHelper.getInstance().insertMemoinDB(memo);
+            DBHelper.getInstance().insertMemoInDB(memo);
             refreshOfActivity.Refresh();
             EditMemoDialog.this.dismiss();
         }else{
             memo.setContent(content);
-           // DBHelper.getInstance().updateMemoinDB(memo);
+            DBHelper.getInstance().updateMemoInDB(memo);
             refreshOfActivity.Refresh();
             EditMemoDialog.this.dismiss();
         }
     }
 
-    private void onDeleteMemo(){
+    private void onCancelDialog(){
         if(-1 == memo.getID()){
             refreshOfActivity.Refresh();
             EditMemoDialog.this.dismiss();
         }else{
-            //DBHelper.getInstance().deleteMemoinDB(memo);
+            refreshOfActivity.Refresh();
+            EditMemoDialog.this.dismiss();
+        }
+    }
+
+    public void onDeleteMemoButton(){
+        if(-1 == memo.getID()){
+            refreshOfActivity.Refresh();
+            EditMemoDialog.this.dismiss();
+        }else{
+            DBHelper.getInstance().deleteMemoinDB(memo);
             refreshOfActivity.Refresh();
             EditMemoDialog.this.dismiss();
         }
@@ -112,4 +131,5 @@ public class EditMemoDialog extends Dialog {
             }
         }
     }
+
 }

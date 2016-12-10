@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView android:id="@+id/tv_day" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="요일"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <EditText android:id="@+id/et_startTime" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="교시 - "/>
+        <EditText android:id="@+id/et_endTime" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="교시"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="수업: "/>
+        <EditText android:id="@+id/et_subjectName" android:layout_width="match_parent" android:layout_height="wrap_content" android:maxLines="1"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="강의실: "/>
+        <EditText android:id="@+id/et_classNum" android:layout_width="match_parent" android:layout_height="wrap_content" android:maxLines="1"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="교수님: "/>
+        <EditText android:id="@+id/et_professor" android:layout_width="match_parent" android:layout_height="wrap_content" android:maxLines="1"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="색깔: "/>
+        <EditText android:id="@+id/et_colorOfCell" android:layout_width="match_parent" android:layout_height="wrap_content" android:maxLines="1"/>
+    </LinearLayout>
+</LinearLayout>
