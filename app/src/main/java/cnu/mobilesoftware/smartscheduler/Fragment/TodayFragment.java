@@ -30,16 +30,15 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
 
     private final String mTitle = "Today";
     private ArrayList<ScheduleItem> todaySchedule = new ArrayList<>();
-    TextView memoText;
+    TextView memoText,todayText,famousSaying;
     LinearLayout linearLayoutShowScheudle, todayLayout;
-
-
 
     ArrayList<String> nameList = new ArrayList<String>();      // 배열리스트(스트링)
     int num = 0;
 
     Memo selectedMemo;
     HashMap<String, Memo> memoList;
+    ArrayList<String> famousSayingList;
 
     public static TodayFragment newInstance() {
         TodayFragment fragment = new TodayFragment();
@@ -55,21 +54,14 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_today, container, false);
-       /// todayText = (TextView) view.findViewById(R.id.todayText);
+        todayText = (TextView) view.findViewById(R.id.todayText);
         memoText = (TextView) view.findViewById(R.id.memoToday);
+        famousSaying = (TextView) view.findViewById(R.id.todayFamoueSaying);
         linearLayoutShowScheudle = (LinearLayout) view.findViewById(R.id.showSchedule);
         todayLayout = (LinearLayout) view.findViewById(R.id.todayLayout);
 
+        getfamousSaying();
         Refresh();
-
-  /*      =======
-
-        refreshMemoList();
-        refreshScheduleData();
-        refreshScheduleMemo();
-
-        //전광판에 띄우는 함수
-        showScheudler();*/
 
         return view;
     }
@@ -120,7 +112,7 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
 
     private void showScheudler() {
         if(selectedMemo == null){
-            nameList.add("\n" + "오늘의 일정:" + "없음");
+            nameList.add("\n" + "달력에 기록된 일정이 없습니다.");
             getTextList();
             nameList.clear();
         }else {
@@ -155,7 +147,6 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
             memoList = new HashMap<>();
     }
 
-
     //배열 리스트 가져오기
     private void getTextList() {
         int i;
@@ -165,25 +156,26 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
 
 
         for (i = 0; i < nameList.size(); i++) {
-            TextView todayText;
-            todayText = new TextView(getActivity());
+            //TextView todayText;
+          //  todayText = new TextView(getActivity());
             todayText.setText(nameList.get(i));  //배열리스트 이용
 //            textView01.setText( ++num + "-" + etName.getText().toString());
             todayText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
-           // todayText.setTextColor(255);  //컬러변경
             todayText.setTextColor(Color.parseColor("#0E0F00"));
             todayText.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL));
-           /* LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);*/
 
             linearLayoutShowScheudle.addView(todayText);  //linearLayout01 위에 생성
-
         }
-
     }
 
+    private void getfamousSaying(){
+        Date cal = Calendar.getInstance().getTime();//현재 날짜와 시간정보를 가져온다.
+        int day = Calendar.getInstance().get(Calendar.DATE);
 
+        String[] famousString = getResources().getStringArray(R.array.FamousSaying);
+        famousSaying.setText(famousString[day]);
+
+    }
 
     @Override
     public String getTitle() {
@@ -197,7 +189,4 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
         refreshScheduleMemo();
         showScheudler();
     }
-
-
-
 }
