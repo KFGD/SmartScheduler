@@ -117,7 +117,7 @@ public class GroupDetailActivity extends AppCompatActivity{
     private void setUpViewPagerAndTabLayout(ViewPager viewPager, TabLayout tabLayout){
         //Setting ViewPager
         SectionsPagerAdapter sectionPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        sectionPagerAdapter.appendFragment(NoticeFragment.newInstance());
+        sectionPagerAdapter.appendFragment(NoticeFragment.newInstance(this));
         sectionPagerAdapter.appendFragment(PostFragment.newInstance(this));
         viewPager.setAdapter(sectionPagerAdapter);
         viewPager.setCurrentItem(0);
@@ -140,6 +140,7 @@ public class GroupDetailActivity extends AppCompatActivity{
     public void onClickAddNotice(View view){
         AddNoticeDialog addNoticeDialog = new AddNoticeDialog();
         addNoticeDialog.show(getSupportFragmentManager(), "");
+
     }
 
     public GroupItem getGroupItem(){

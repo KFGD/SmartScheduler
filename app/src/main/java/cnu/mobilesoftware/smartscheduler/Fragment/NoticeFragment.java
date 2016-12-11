@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import cnu.mobilesoftware.smartscheduler.CardItem;
+import cnu.mobilesoftware.smartscheduler.GroupDetailActivity;
 import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
 import cnu.mobilesoftware.smartscheduler.R;
 import cnu.mobilesoftware.smartscheduler.WebDBHelper;
@@ -26,15 +27,17 @@ import cnu.mobilesoftware.smartscheduler.WebDBHelper;
 public class NoticeFragment extends Fragment implements ITitle{
 
     private final String mTtitle = "Notice";
+    private GroupDetailActivity ownerActivity;
     private WebDBHelper webdb;
 
     RecyclerView recyclerView;
 
-    public static NoticeFragment newInstance(){
+
+    public static NoticeFragment newInstance(GroupDetailActivity ownerActivity){
         NoticeFragment fragment = new NoticeFragment();
+        fragment.ownerActivity = ownerActivity;
         return fragment;
     }
-
     public NoticeFragment() {
         // Required empty public constructor
     }
@@ -60,7 +63,7 @@ public class NoticeFragment extends Fragment implements ITitle{
             ArrayList<CardItem.PeopleCardItem> serverItems = new AsyncTask<Void, Void, ArrayList<CardItem.PeopleCardItem>>(){
                 @Override
                 protected ArrayList<CardItem.PeopleCardItem> doInBackground(Void... voids) {
-                    StringBuilder stringBuilder = webdb.SELECTWEBDB("SELECTGROUPUSER", "32");
+                    StringBuilder stringBuilder = webdb.SELECTWEBDB("SELECTGROUPUSER", ownerActivity.getGroupItem().group_id);
                     String text = "";
                     if(stringBuilder != null)
                         text = stringBuilder.toString();
@@ -73,7 +76,7 @@ public class NoticeFragment extends Fragment implements ITitle{
                         peopleCardItems.add(new CardItem.PeopleCardItem(CardItem.TAG.PEOPLE_CONTENT, chatArray.getJSONObject(0).getString("name"), "방장"));
                         for(int i=1; i<chatArray.length(); i++){
                             JSONObject j = chatArray.getJSONObject(i);
-                            peopleCardItems.add(new CardItem.PeopleCardItem(CardItem.TAG.PEOPLE_CONTENT, j.getString("name"), "회원나부랭이"));
+                            peopleCardItems.add(new CardItem.PeopleCardItem(CardItem.TAG.PEOPLE_CONTENT, j.getString("name"), "회원"));
                         }
                     }catch (Exception e){}
                     return peopleCardItems;
@@ -92,7 +95,7 @@ public class NoticeFragment extends Fragment implements ITitle{
             ArrayList<CardItem.NoticeCardItem> serverItems = new AsyncTask<Void, Void, ArrayList<CardItem.NoticeCardItem>>(){
                 @Override
                 protected ArrayList<CardItem.NoticeCardItem> doInBackground(Void... voids) {
-                    StringBuilder stringBuilder = webdb.SELECTWEBDB("SELECTNOTICE", "32");
+                    StringBuilder stringBuilder = webdb.SELECTWEBDB("SELECTNOTICE", ownerActivity.getGroupItem().group_id);
                     String text = "";
                     if(stringBuilder != null)
                         text = stringBuilder.toString();

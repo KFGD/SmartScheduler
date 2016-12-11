@@ -116,7 +116,7 @@ public class PostFragment extends Fragment implements ITitle{
         new AsyncTask<Void, Void, String>(){
             @Override
             protected String doInBackground(Void... voids) {
-                StringBuilder stringBuilder = webdb.SELECTWEBDB("SELECTBOARD", "groupid");
+                StringBuilder stringBuilder = webdb.SELECTWEBDB("SELECTBOARD", ownerActivity.getGroupItem().group_id);
                 String text = "";
                 if(stringBuilder != null)
                     text = stringBuilder.toString();
