@@ -15,50 +15,7 @@ import java.net.URLEncoder;
 
 public class WebDBHelper {
 
-    String temp;
     public WebDBHelper(){}
-
-    //MAKE NICKNAME
-    //MAKE GROUP
-    public static synchronized StringBuilder MAKENICKNAME(String paradeadline, String parauuid){
-        StringBuilder stringBuilder = null;
-        HttpURLConnection conn = null;
-        BufferedReader reader = null;
-        try{
-            String link="http://52.79.193.88/SmartScheduler/MAKENICKNAME.php";
-            String data  = URLEncoder.encode("deadline", "UTF-8") + "=" + URLEncoder.encode(paradeadline, "UTF-8");
-            data  += "&" + URLEncoder.encode("uuid", "UTF-8") + "=" + URLEncoder.encode(parauuid, "UTF-8");
-            URL url = new URL(link);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(10000);
-            conn.setReadTimeout(10000);
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-            conn.setRequestMethod("POST");
-            OutputStream wr = conn.getOutputStream();
-            wr.write(data.getBytes("UTF-8"));
-            wr.flush();
-            wr.close();
-            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line = null;
-            while ((line = reader.readLine()) != null)
-                stringBuilder.append(line);
-        }catch (Exception e){
-            stringBuilder = null;
-        }finally{
-            if(conn != null)
-                conn.disconnect();
-            if(reader != null)
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-        }
-        return stringBuilder;
-    }
-
-
     //MAKE GROUP
     public static synchronized StringBuilder MAKEGROUP(String paradeadline, String parauuid){
         StringBuilder stringBuilder = new StringBuilder();
@@ -109,7 +66,7 @@ public class WebDBHelper {
             String data = null;
             if(query.equals("SELECTUSERINFO")||query.equals("SELECTUSERPLAN")||query.equals("SELECTUSERGROUP"))
                 data = URLEncoder.encode("uuid", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
-            if(query.equals("SELECTGROUPINFO")||query.equals("SELECTBOARD")||query.equals("SELECTGROUPUSER"))
+            if(query.equals("SELECTGROUPINFO")||query.equals("SELECTBOARD")||query.equals("SELECTGROUPUSER")||query.equals("SELECTNOTICE"))
                 data = URLEncoder.encode("groupid", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
             URL url = new URL(link);
             conn = (HttpURLConnection) url.openConnection();
