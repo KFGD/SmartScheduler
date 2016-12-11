@@ -1,6 +1,7 @@
 package cnu.mobilesoftware.smartscheduler.Fragment;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -11,15 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import cnu.mobilesoftware.smartscheduler.CardItem;
 import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
 import cnu.mobilesoftware.smartscheduler.R;
+import cnu.mobilesoftware.smartscheduler.WebDBHelper;
 
 public class NoticeFragment extends Fragment implements ITitle{
 
     private final String mTtitle = "Notice";
+    private WebDBHelper webdb;
 
     RecyclerView recyclerView;
 
@@ -41,30 +48,73 @@ public class NoticeFragment extends Fragment implements ITitle{
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         NoticeViewAdapter noticeViewAdapter = new NoticeViewAdapter(initCardItem());
         recyclerView.setAdapter(noticeViewAdapter);
+        webdb = new WebDBHelper();
         return view;
     }
-
+    //People
+    ArrayList<CardItem.PeopleCardItem> peopleCardItems = new ArrayList<>();
     private ArrayList<CardItem.BasicCardItem> initCardItem(){
         ArrayList<CardItem.BasicCardItem> cardItemArrayList = new ArrayList<>();
-
-        //People
-        ArrayList<CardItem.PeopleCardItem> peopleCardItems = new ArrayList<>();
         peopleCardItems.add(new CardItem.PeopleCardItem(CardItem.TAG.PEOPLE_HEADER));
-        peopleCardItems.add(new CardItem.PeopleCardItem(CardItem.TAG.PEOPLE_CONTENT, "염철민", "방장"));
-        peopleCardItems.add(new CardItem.PeopleCardItem(CardItem.TAG.PEOPLE_CONTENT, "박종형", "그룹원"));
-        peopleCardItems.add(new CardItem.PeopleCardItem(CardItem.TAG.PEOPLE_CONTENT, "김관용", "그룹원"));
+        try {
+            ArrayList<CardItem.PeopleCardItem> serverItems = new AsyncTask<Void, Void, ArrayList<CardItem.PeopleCardItem>>(){
+                @Override
+                protected ArrayList<CardItem.PeopleCardItem> doInBackground(Void... voids) {
+                    StringBuilder stringBuilder = webdb.SELECTWEBDB("SELECTGROUPUSER", "32");
+                    String text = "";
+                    if(stringBuilder != null)
+                        text = stringBuilder.toString();
+
+                    ArrayList<CardItem.PeopleCardItem> peopleCardItems = new ArrayList<CardItem.PeopleCardItem>();
+                    try {
+                        JSONArray chatArray = null;
+                        JSONObject jsonObj = new JSONObject(text);
+                        chatArray = jsonObj.getJSONArray("result");
+                        peopleCardItems.add(new CardItem.PeopleCardItem(CardItem.TAG.PEOPLE_CONTENT, chatArray.getJSONObject(0).getString("name"), "방장"));
+                        for(int i=1; i<chatArray.length(); i++){
+                            JSONObject j = chatArray.getJSONObject(i);
+                            peopleCardItems.add(new CardItem.PeopleCardItem(CardItem.TAG.PEOPLE_CONTENT, j.getString("name"), "회원나부랭이"));
+                        }
+                    }catch (Exception e){}
+                    return peopleCardItems;
+                }
+            }.execute().get();
+            for(CardItem.PeopleCardItem item : serverItems)
+                peopleCardItems.add(item);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //Notice
         ArrayList<CardItem.NoticeCardItem> noticeCardItems = new ArrayList<>();
         noticeCardItems.add(new CardItem.NoticeCardItem(CardItem.TAG.NOTICE_HEADER));
-        noticeCardItems.add(new CardItem.NoticeCardItem(CardItem.TAG.NOTICE_CONTENT, "2016-12-10 PM 6:00", "모바일 마무리하기(1)!"));
-        noticeCardItems.add(new CardItem.NoticeCardItem(CardItem.TAG.NOTICE_CONTENT, "2016-12-10 PM 6:00", "모바일 마무리하기(2)!"));
-        noticeCardItems.add(new CardItem.NoticeCardItem(CardItem.TAG.NOTICE_CONTENT, "2016-12-10 PM 6:00", "모바일 마무리하기(3)!"));
-        noticeCardItems.add(new CardItem.NoticeCardItem(CardItem.TAG.NOTICE_CONTENT, "2016-12-10 PM 6:00", "모바일 마무리하기(4)!"));
-        noticeCardItems.add(new CardItem.NoticeCardItem(CardItem.TAG.NOTICE_CONTENT, "2016-12-10 PM 6:00", "모바일 마무리하기(5)!"));
-        noticeCardItems.add(new CardItem.NoticeCardItem(CardItem.TAG.NOTICE_CONTENT, "2016-12-10 PM 6:00", "모바일 마무리하기(6)!"));
-        noticeCardItems.add(new CardItem.NoticeCardItem(CardItem.TAG.NOTICE_CONTENT, "2016-12-10 PM 6:00", "모바일 마무리하기(7)!"));
+        try {
+            ArrayList<CardItem.NoticeCardItem> serverItems = new AsyncTask<Void, Void, ArrayList<CardItem.NoticeCardItem>>(){
+                @Override
+                protected ArrayList<CardItem.NoticeCardItem> doInBackground(Void... voids) {
+                    StringBuilder stringBuilder = webdb.SELECTWEBDB("SELECTNOTICE", "32");
+                    String text = "";
+                    if(stringBuilder != null)
+                        text = stringBuilder.toString();
 
+                    ArrayList<CardItem.NoticeCardItem> noticeCardItems = new ArrayList<CardItem.NoticeCardItem>();
+                    try {
+                        JSONArray noticeArray = null;
+                        JSONObject jsonObj = new JSONObject(text);
+                        noticeArray = jsonObj.getJSONArray("result");
+                        for(int i=0; i<noticeArray.length(); i++){
+                            JSONObject j = noticeArray.getJSONObject(i);
+                            noticeCardItems.add(new CardItem.NoticeCardItem(CardItem.TAG.NOTICE_CONTENT, j.getString("datetime"), j.getString("topic")));
+                        }
+                    }catch (Exception e){}
+                    return noticeCardItems;
+                }
+            }.execute().get();
+            for(CardItem.NoticeCardItem item : serverItems)
+                noticeCardItems.add(item);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         cardItemArrayList.addAll(peopleCardItems);
         cardItemArrayList.addAll(noticeCardItems);
 
