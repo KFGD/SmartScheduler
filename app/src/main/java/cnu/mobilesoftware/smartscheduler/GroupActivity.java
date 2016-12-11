@@ -240,6 +240,7 @@ public class GroupActivity extends AppCompatActivity {
 
         public void updateResources(ArrayList<GroupItem> groupItems) {
             this.resources = groupItems;
+            notifyDataSetChanged();
         }
 
         @Override

@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +44,7 @@ public class PostFragment extends Fragment implements ITitle{
     private WebDBHelper webdb;
     private EditText chatinput;
     private Button sendchat;
-    private ListView showchat;
+    private RecyclerView showchat;
     private ChatAdapter chatAdapter;
     public static PostFragment newInstance(GroupDetailActivity ownerActivity){
         PostFragment fragment = new PostFragment();
@@ -83,7 +85,9 @@ public class PostFragment extends Fragment implements ITitle{
         webdb = new WebDBHelper();
         chatinput = (EditText) view.findViewById(R.id.chatinput);
         sendchat = (Button) view.findViewById(R.id.sendChat);
-        showchat = (ListView) view.findViewById(R.id.showchat);
+        showchat = (RecyclerView) view.findViewById(R.id.showchat);
+        showchat.setLayoutManager(new LinearLayoutManager(ownerActivity));
+
         sendchat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,24 +125,23 @@ public class PostFragment extends Fragment implements ITitle{
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                ArrayList<String> namearray = new ArrayList<String>();
-                ArrayList<String> contentarray = new ArrayList<String>();
+                //ArrayList<String> namearray = new ArrayList<String>();
+                //ArrayList<String> contentarray = new ArrayList<String>();
+                ArrayList<ChatItem> chatItems = new ArrayList<ChatItem>();
                 try {
                     JSONArray chatArray = null;
                     JSONObject jsonObj = new JSONObject(s);
                     chatArray = jsonObj.getJSONArray("result");
                     for(int i=0; i<chatArray.length(); i++){
                         JSONObject j = chatArray.getJSONObject(i);
-                        namearray.add(j.getString("name"));
-                        contentarray.add(j.getString("content"));
+                        chatItems.add(new ChatItem(j.getString("name"),j.getString("content")));
                     }
 
-                    ChatAdapter oldchat = (ChatAdapter)showchat.getAdapter();
-                    ChatAdapter chatchat = new ChatAdapter(getContext(), 0, namearray, contentarray);
-                    //if(!oldchat.equals(chatchat)) {
-                        showchat.setAdapter(chatchat);
-                        showchat.setSelection(showchat.getAdapter().getCount() - 1);
-                    //}
+                    ChatAdapter chatAdapter = new ChatAdapter();
+                    chatAdapter.updateResources(chatItems);
+                    showchat.setAdapter(chatAdapter);
+                    showchat.getLayoutManager().scrollToPosition(showchat.getAdapter().getItemCount());
+
                 }catch (Exception e){}
             }
         }.execute();
@@ -150,28 +153,43 @@ public class PostFragment extends Fragment implements ITitle{
         return mTitle;
     }
 
-    public static class ChatAdapter extends ArrayAdapter<String> {
-        private ArrayList<String> namearray;
-        private ArrayList<String> contentarray;
-        private Context context;
+    public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
 
-        public ChatAdapter(Context context, int textViewResourceID, ArrayList<String> names,  ArrayList<String> contents){
-            super(context, textViewResourceID, names);
-            namearray = names;
-            contentarray = contents;
-            this.context = context;
-       }
-        public View getView(int position, View convertView, ViewGroup parent){
-            View v = convertView;
-            if(v==null){
-                LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = vi.inflate(R.layout.activity_chat_adapter, null);
+        private ArrayList<ChatItem> resources;
+
+        public void updateResources(ArrayList<ChatItem> resources){
+            this.resources = resources;
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public ChatViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_chat_adapter, parent, false);
+            return new ChatViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(ChatViewHolder holder, int position) {
+            ChatItem item = resources.get(position);
+            holder.username.setText(item.name);
+            holder.usercontent.setText(item.content);
+        }
+
+        @Override
+        public int getItemCount() {
+            return resources.size();
+        }
+
+        public class ChatViewHolder extends RecyclerView.ViewHolder{
+
+            final TextView username;
+            final TextView usercontent;
+
+            public ChatViewHolder(View itemView) {
+                super(itemView);
+                username = (TextView)itemView.findViewById(R.id.username);
+                usercontent = (TextView)itemView.findViewById(R.id.usercontent);
             }
-            TextView name = (TextView)v.findViewById(R.id.username);
-            TextView content = (TextView)v.findViewById(R.id.usercontent);
-            name.setText(namearray.get(position));
-            content.setText(contentarray.get(position));
-            return v;
         }
     }
 }
