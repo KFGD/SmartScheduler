@@ -21,15 +21,11 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cnu.mobilesoftware.smartscheduler.Dialog.AddGroupDialog;
 import cnu.mobilesoftware.smartscheduler.Dialog.AddNoticeDialog;
 import cnu.mobilesoftware.smartscheduler.Fragment.NoticeFragment;
 import cnu.mobilesoftware.smartscheduler.Fragment.PostFragment;
@@ -144,6 +140,10 @@ public class GroupDetailActivity extends AppCompatActivity{
     public void onClickAddNotice(View view){
         AddNoticeDialog addNoticeDialog = new AddNoticeDialog();
         addNoticeDialog.show(getSupportFragmentManager(), "");
+    }
+
+    public GroupItem getGroupItem(){
+        return groupItem;
     }
 
     public final class SectionsPagerAdapter extends FragmentPagerAdapter {

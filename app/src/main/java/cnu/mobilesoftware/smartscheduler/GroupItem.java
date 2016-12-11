@@ -12,8 +12,10 @@ public class GroupItem implements Parcelable{
     public String group_title = "";
     public int img_res = R.drawable.cat;
 
-    public GroupItem(String group_title){
-        this.group_title = group_title;
+
+
+    public GroupItem(String group_id){
+        this.group_id = group_id;
     }
 
     public GroupItem(String group_id, String group_title){

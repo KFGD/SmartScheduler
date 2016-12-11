@@ -24,6 +24,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -190,9 +194,28 @@ public class GroupActivity extends AppCompatActivity {
 
             @Override
             protected ArrayList<GroupItem> doInBackground(Void... voids) {
-                //StringBuilder stringBuilder = WebDBHelper.SELECTWEBDB("SELECTUSERGROUP", SmartSchedulerApplication.getUUID());
-                ArrayList<GroupItem> groupItems = DBHelper.getInstance().getGroupItemInDB();
-                return groupItems;
+                StringBuilder stringBuilder = WebDBHelper.SELECTWEBDB("SELECTUSERGROUP", SmartSchedulerApplication.getUUID());
+                ArrayList<GroupItem> serverItems = new ArrayList<GroupItem>();
+                try {
+                    JSONObject rootObject = new JSONObject(stringBuilder.toString());
+                    JSONArray result = rootObject.getJSONArray("result");
+                    for(int i=0; i<result.length(); ++i){
+                        JSONObject object = result.getJSONObject(i);
+                        String id = object.get("groupid").toString();
+                        serverItems.add(new GroupItem(id));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ArrayList<GroupItem> localItems = DBHelper.getInstance().getGroupItemInDB();
+                for(GroupItem itemA : serverItems){
+                    for(GroupItem itemB : localItems){
+                        if(itemA.group_id.equals(itemB.group_id))
+                            itemA.group_title = itemB.group_title;
+                    }
+                }
+                return serverItems;
             }
 
             @Override

@@ -1,6 +1,7 @@
 package cnu.mobilesoftware.smartscheduler.Dialog;
 
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
@@ -15,7 +16,10 @@ import android.widget.LinearLayout;
 
 import java.util.concurrent.ExecutionException;
 
+import cnu.mobilesoftware.smartscheduler.DBHelper;
+import cnu.mobilesoftware.smartscheduler.GroupItem;
 import cnu.mobilesoftware.smartscheduler.R;
+import cnu.mobilesoftware.smartscheduler.SmartSchedulerApplication;
 import cnu.mobilesoftware.smartscheduler.WebDBHelper;
 
 public class EnterGroupDialog extends AppCompatDialogFragment implements View.OnClickListener{
@@ -84,11 +88,9 @@ public class EnterGroupDialog extends AppCompatDialogFragment implements View.On
                     if(WebDBHelper.SELECTWEBDB("SELECTGROUPINFO", code).length() == 0) {
                         bool = false;
                     }
-                    Log.i("info", "1");
                     return bool;
                 }
             }.execute().get();
-            Log.i("info", "2");
             bReturn = value;
         } catch (Exception e) {
             e.printStackTrace();
@@ -128,8 +130,36 @@ public class EnterGroupDialog extends AppCompatDialogFragment implements View.On
                 //GroupName 20글자 미만이 아닐 경우,
                 bValue = ValidateGroupName();
                 if (bValue) {
-                    //Http 그룹 참여
+                    final String uuid = SmartSchedulerApplication.getUUID();
+                    final String groupdId = tie_group_code.getText().toString();
+                    final String groupTitle = tie_group_name.getText().toString();
 
+                    //Http 그룹 참여
+                    new AsyncTask<Void, Void, Void>(){
+
+                        ProgressDialog progressDialog = null;
+
+                        @Override
+                        protected void onPreExecute() {
+                            super.onPreExecute();
+                            if(progressDialog == null) progressDialog = new ProgressDialog(getContext());
+                            progressDialog.show();
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void aVoid) {
+                            super.onPostExecute(aVoid);
+                            if(progressDialog != null) progressDialog.dismiss();
+                            progressDialog = null;
+                        }
+
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+                            WebDBHelper.INSERTUSERGROUP(uuid, groupdId);
+                            DBHelper.getInstance().insertGroupItemInDB(new GroupItem(groupdId, groupTitle));
+                            return null;
+                        }
+                    }.execute();
                 }
             }
                 break;

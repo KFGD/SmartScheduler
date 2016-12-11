@@ -299,4 +299,32 @@ public class DBHelper extends SQLiteOpenHelper{
         }
         return items;
     }
+
+    public boolean searchGroupdTitle(String group_id){
+
+        Boolean bValue = false;
+
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        String params[] = {group_id};
+        try{
+            db = getReadableDatabase();
+            cursor = db.query(
+                    TableInfo.GROUP_ITEM_LIST.TABLE_NAME,
+                    null,
+                    TableInfo.GROUP_ITEM_LIST.GROUP_ID+"=?",
+                    params,
+                    null, null, null
+            );
+            if(cursor.moveToFirst())
+                bValue = true;
+
+        }catch (Exception e){
+            Log.e("DB_ERROR", "getGroupItemInDB()");
+            e.printStackTrace();
+        }finally {
+            closeResource(db, cursor);
+        }
+        return bValue;
+    }
 }
