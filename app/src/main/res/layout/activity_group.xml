@@ -44,7 +44,7 @@
         <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_create_white_24dp"
+            android:src="@drawable/nickname"
             app:fab_label="닉네임 만들기"
             android:onClick="onClickNick"/>
         <com.github.clans.fab.FloatingActionButton
