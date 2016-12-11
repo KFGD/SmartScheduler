@@ -21,7 +21,6 @@ import cnu.mobilesoftware.smartscheduler.Interface.ITitle;
 public class MainActivity extends AppCompatActivity {
 
     TodayFragment todayFragment;
-    boolean isCheck = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
