@@ -65,4 +65,24 @@
             app:fab_label="공지 추가하기"
             android:onClick="onClickAddNotice"/>
     </com.github.clans.fab.FloatingActionMenu>
+    <LinearLayout
+        android:id="@+id/linear_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:visibility="gone">
+        <EditText
+            android:id="@+id/chatinput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"/>
+        <Button
+            android:id="@+id/sendChat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickSendChatBtn"
+            android:text="전송" />
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
