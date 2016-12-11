@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import cnu.mobilesoftware.smartscheduler.GroupDetailActivity;
 import cnu.mobilesoftware.smartscheduler.R;
 import cnu.mobilesoftware.smartscheduler.WebDBHelper;
 
@@ -31,6 +32,7 @@ public class AddNoticeDialog extends AppCompatDialogFragment implements View.OnC
     TextInputEditText tie_meeting_day, tie_meeting_time_hour, tie_meeting_time_min, tie_meeting_topic;
 
     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+    private GroupDetailActivity ownerActivity;
     private WebDBHelper webdb;
 
     @Nullable
@@ -39,6 +41,7 @@ public class AddNoticeDialog extends AppCompatDialogFragment implements View.OnC
         //return super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.dialog_notice_add, container, false);
         initializeWidget(view);
+        ownerActivity = (GroupDetailActivity)getActivity();
         return view;
     }
 
@@ -85,7 +88,7 @@ public class AddNoticeDialog extends AppCompatDialogFragment implements View.OnC
         datePickerDialog.show();
     }
     private void onClickCheckBtn(){
-        final String groupid = "sibarama";
+        final String groupid = ownerActivity.getGroupItem().group_id;
         final String date = tie_meeting_day.getText().toString();
         final String time = tie_meeting_time_hour.getText().toString() +" : "+ tie_meeting_time_min.getText().toString();
         final String topic = tie_meeting_topic.getText().toString();
