@@ -72,7 +72,7 @@ public class GroupActivity extends AppCompatActivity {
     }
 
 
-    public void onClickNickName(View view){
+    public void onClickNick(View view){
         FragmentManager fm = getSupportFragmentManager();
         NickNameDialog dialog = new NickNameDialog();
         dialog.show(fm, "");
