@@ -74,6 +74,7 @@ public class AddGroupDialog extends AppCompatDialogFragment implements View.OnCl
                             super.onPostExecute(s);
                             GroupItem groupItem = new GroupItem(s, group_title);
                             DBHelper.getInstance().insertGroupItemInDB(groupItem);
+
                         }
                         @Override
                         protected String doInBackground(Void... voids) {

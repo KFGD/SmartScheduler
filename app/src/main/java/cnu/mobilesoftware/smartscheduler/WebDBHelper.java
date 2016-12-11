@@ -61,7 +61,7 @@ public class WebDBHelper {
 
     //MAKE GROUP
     public static synchronized StringBuilder MAKEGROUP(String paradeadline, String parauuid){
-        StringBuilder stringBuilder = null;
+        StringBuilder stringBuilder = new StringBuilder();
         HttpURLConnection conn = null;
         BufferedReader reader = null;
         try{
@@ -79,7 +79,6 @@ public class WebDBHelper {
             wr.write(data.getBytes("UTF-8"));
             wr.flush();
             wr.close();
-            Log.d("fuck", paradeadline);
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = null;
             while ((line = reader.readLine()) != null)
