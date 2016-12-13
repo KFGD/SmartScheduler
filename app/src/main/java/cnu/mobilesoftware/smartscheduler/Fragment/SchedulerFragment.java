@@ -75,8 +75,8 @@ public class SchedulerFragment extends Fragment implements ITitle, OnObservedSel
                     if( !scheduler.insertCellDataWithScheduleItem(item)){
                         Toast.makeText(getContext(), "시간표 추가가 불가능합니다. ", Toast.LENGTH_SHORT).show();
                     }
-                    Refresh();
                 }
+                Refresh();
             }
             case REQUEST_EDIT_SCHEDULE:{
                 if(resultCode == RESULT_DELETE_SCHEDULE){
@@ -86,10 +86,10 @@ public class SchedulerFragment extends Fragment implements ITitle, OnObservedSel
                 }else if(resultCode == RESULT_EDIT_SCHEDULE){
                     ScheduleItem sourceItem = data.getParcelableExtra("SOURCE_ITEM");
                     ScheduleItem updateItem = data.getParcelableExtra("UPDATE_ITEM");
-                    Refresh();
                     if(!scheduler.editCellDataWithScheduleItem(sourceItem, updateItem)){
                         Toast.makeText(getContext(), "시간표 수정이 불가능합니다.", Toast.LENGTH_SHORT).show();
                     }
+                    Refresh();
                 }
             }
         }
@@ -125,6 +125,6 @@ public class SchedulerFragment extends Fragment implements ITitle, OnObservedSel
 
     @Override
     public void Refresh() {
-        ownerActivity.refreshToday();
+        ownerActivity.Refresh();
     }
 }

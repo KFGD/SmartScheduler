@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void refreshToday(){
+    public void Refresh(){
         todayFragment.Refresh();
     }
 
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         sectionPagerAdapter.appendFragment(TodayFragment.newInstance());
         sectionPagerAdapter.appendFragment(SchedulerFragment.newInstance(this));
         viewPager.setAdapter(sectionPagerAdapter);
-        viewPager.setCurrentItem(0);
+        viewPager.setCurrentItem(1);
 
         //Setting TabLayout
         tabLayout.setupWithViewPager(viewPager);
