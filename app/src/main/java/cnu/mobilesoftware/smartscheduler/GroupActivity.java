@@ -105,8 +105,6 @@ public class GroupActivity extends AppCompatActivity {
             protected Void doInBackground(Void... voids) {
 
                 WebDBHelper.INSERTUSERPLAN(result.toString());
-                Log.i("info", result.toString());
-
                 return null;
             }
 

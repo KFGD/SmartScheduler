@@ -9,9 +9,10 @@
     </style>
 
     <style name="Theme.SmartSchedulerTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">#EC4074</item>
+        <item name="colorPrimary">#1976D2</item>
         <item name="colorAccent">#FFFFFF</item>
-        <item name="colorPrimaryDark">#E91E63</item>
+        <item name="colorPrimaryDark">#0D47A1</item>
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 

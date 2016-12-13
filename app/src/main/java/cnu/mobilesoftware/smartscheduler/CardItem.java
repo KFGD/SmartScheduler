@@ -13,6 +13,7 @@ public class CardItem {
         PEOPLE_CONTENT,
         NOTICE_HEADER,
         NOTICE_CONTENT,
+        GROUP_CODE,
     }
 
     public static TAG convertNumToTag(int num){
@@ -30,6 +31,9 @@ public class CardItem {
             case 4:
                 return TAG.NOTICE_CONTENT;
 
+            case 5:
+                return TAG.GROUP_CODE;
+
             default:
                 return TAG.NONE;
         }
@@ -39,6 +43,16 @@ public class CardItem {
         public TAG tag;
         public BasicCardItem(TAG tag){
             this.tag = tag;
+        }
+    }
+
+    public static class GroupCardItem extends BasicCardItem{
+
+        public String groupCode = null;
+
+        public GroupCardItem(TAG tag, String groupCode) {
+            super(tag);
+            this.groupCode = groupCode;
         }
     }
 

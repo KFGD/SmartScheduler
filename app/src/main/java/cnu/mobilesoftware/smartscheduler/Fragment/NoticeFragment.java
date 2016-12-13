@@ -120,6 +120,7 @@ public class NoticeFragment extends Fragment implements ITitle{
         } catch (Exception e) {
             e.printStackTrace();
         }
+        cardItemArrayList.add(new CardItem.GroupCardItem(CardItem.TAG.GROUP_CODE, ownerActivity.getGroupItem().group_id));
         cardItemArrayList.addAll(peopleCardItems);
         cardItemArrayList.addAll(noticeCardItems);
 
@@ -159,6 +160,9 @@ public class NoticeFragment extends Fragment implements ITitle{
                 case NOTICE_CONTENT:
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_notice_content, parent, false);
                     return new NoticeCardHolder(view, CardItem.TAG.NOTICE_CONTENT);
+                case GROUP_CODE:
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_group_code, parent, false);
+                    return new GroupCardHolder(view, CardItem.TAG.GROUP_CODE);
             }
             return null;
         }
@@ -176,19 +180,40 @@ public class NoticeFragment extends Fragment implements ITitle{
                         peopleCardHolder.ivRank.setImageResource(R.drawable.notboss);
                 }
 
-            }else{
+            }else if(holder instanceof NoticeCardHolder){
                 NoticeCardHolder noticeCardHolder = (NoticeCardHolder)holder;
                 CardItem.NoticeCardItem item = (CardItem.NoticeCardItem)resources.get(position);
                 if(item.tag != CardItem.TAG.NOTICE_HEADER){
                     noticeCardHolder.tvDate.setText(item.meetingDate);
                     noticeCardHolder.tvTopic.setText(item.meetingTopic);
                 }
+            }else{
+                GroupCardHolder groupCardHolder = (GroupCardHolder)holder;
+                CardItem.GroupCardItem item = (CardItem.GroupCardItem)resources.get(position);
+                groupCardHolder.tvGroupCode.setText(item.groupCode);
             }
         }
 
         @Override
         public int getItemCount() {
             return resources.size();
+        }
+    }
+
+    private class GroupCardHolder extends RecyclerView.ViewHolder{
+        private CardItem.TAG tag = null;
+        private TextView tvGroupCode = null;
+
+        public GroupCardHolder(View itemView) {
+            super(itemView);
+        }
+
+        public GroupCardHolder(View itemView, CardItem.TAG tag){
+            super(itemView);
+            this.tag = tag;
+            if(tag == CardItem.TAG.GROUP_CODE){
+                tvGroupCode = (TextView)itemView.findViewById(R.id.tv_group_code);
+            }
         }
     }
 
