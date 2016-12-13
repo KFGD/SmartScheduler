@@ -66,7 +66,7 @@ public class WebDBHelper {
             String data = null;
             if(query.equals("SELECTUSERINFO")||query.equals("SELECTUSERPLAN")||query.equals("SELECTUSERGROUP"))
                 data = URLEncoder.encode("uuid", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
-            if(query.equals("SELECTGROUPINFO")||query.equals("SELECTBOARD")||query.equals("SELECTGROUPUSER")||query.equals("SELECTNOTICE")||query.equals("SELECTGROUPBLACK"));
+            if(query.equals("SELECTGROUPINFO")||query.equals("SELECTBOARD")||query.equals("SELECTGROUPUSER")||query.equals("SELECTNOTICE")||query.equals("SELECTGROUPBLACK"))
                 data = URLEncoder.encode("groupid", "UTF-8") + "=" + URLEncoder.encode(id, "UTF-8");
             URL url = new URL(link);
             conn = (HttpURLConnection) url.openConnection();
