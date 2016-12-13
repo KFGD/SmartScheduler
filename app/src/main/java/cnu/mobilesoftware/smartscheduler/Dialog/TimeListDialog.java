@@ -6,16 +6,23 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
+import cnu.mobilesoftware.smartscheduler.Fragment.ChatItem;
+import cnu.mobilesoftware.smartscheduler.Fragment.PostFragment;
+import cnu.mobilesoftware.smartscheduler.GroupDetailActivity;
 import cnu.mobilesoftware.smartscheduler.GroupItem;
 import cnu.mobilesoftware.smartscheduler.R;
 import cnu.mobilesoftware.smartscheduler.WebDBHelper;
@@ -29,6 +36,7 @@ public class TimeListDialog extends AppCompatDialogFragment {
     private OnSelectTimeItem onSelectTimeItem = null;
     private TimeItemAdapter adapter = null;
     private GroupItem groupItem = null;
+    private WebDBHelper webdb = null;
 
     @Nullable
     @Override
@@ -42,6 +50,8 @@ public class TimeListDialog extends AppCompatDialogFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new TimeItemAdapter();
         recyclerView.setAdapter(adapter);
+
+        webdb = new WebDBHelper();
         return view;
     }
 
@@ -52,10 +62,14 @@ public class TimeListDialog extends AppCompatDialogFragment {
             String str = new AsyncTask<Void, Void, String>() {
                 @Override
                 protected String doInBackground(Void... voids) {
-
-                    return null;
+                    StringBuilder stringBuilder = webdb.SELECTWEBDB("SELECTGROUPBLACK", groupItem.group_id);
+                    String text = "";
+                    if(stringBuilder != null)
+                        text = stringBuilder.toString();
+                    return text;
                 }
             }.execute().get();
+            GrouopBlankFormat(str);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -102,8 +116,29 @@ public class TimeListDialog extends AppCompatDialogFragment {
         }
     }
 
-
     public interface OnSelectTimeItem{
         public void onSelectTimeItem(int hour, int min);
+    }
+    private void GrouopBlankFormat(String s){
+        String[][] result = new String[5][12];
+        String[] tempArray = null;
+        String tempString = "";
+        try {
+            JSONArray chatArray = null;
+            JSONObject jsonObj = new JSONObject(s);
+            chatArray = jsonObj.getJSONArray("result");
+            for(int i=0; i<chatArray.length(); i++){
+                JSONObject j = chatArray.getJSONObject(i);
+                tempString = j.getString("plan");
+                while(tempString.length()<12){
+                    tempString = "0"+tempString;
+                }
+                tempArray = tempString.split("");
+                for(int k=0; k<12; k++){
+                    result[i][k] = tempArray[k+1];
+                }
+            }
+        }catch (Exception e){}
+        //결과는 result 이차원배열에 담긴다.
     }
 }
