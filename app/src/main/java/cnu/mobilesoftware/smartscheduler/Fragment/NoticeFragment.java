@@ -1,6 +1,7 @@
 package cnu.mobilesoftware.smartscheduler.Fragment;
 
 
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -168,7 +170,10 @@ public class NoticeFragment extends Fragment implements ITitle{
                 CardItem.PeopleCardItem item = (CardItem.PeopleCardItem)resources.get(position);
                 if(item.tag != CardItem.TAG.PEOPLE_HEADER){
                     peopleCardHolder.tvName.setText(item.peopleName);
-                    peopleCardHolder.tvRank.setText(item.peopleRank);
+                    if(item.peopleRank.equals("방장"))
+                        peopleCardHolder.ivRank.setImageResource(R.drawable.boss);
+                    else
+                        peopleCardHolder.ivRank.setImageResource(R.drawable.notboss);
                 }
 
             }else{
@@ -190,7 +195,7 @@ public class NoticeFragment extends Fragment implements ITitle{
     private class PeopleCardHolder extends RecyclerView.ViewHolder{
         private CardItem.TAG tag = null;
         private TextView tvName = null;
-        private TextView tvRank = null;
+        private ImageView ivRank = null;
 
         public PeopleCardHolder(View itemView) {
             super(itemView);
@@ -200,7 +205,7 @@ public class NoticeFragment extends Fragment implements ITitle{
             this.tag = tag;
             if(tag == CardItem.TAG.PEOPLE_CONTENT){
                 tvName = (TextView)itemView.findViewById(R.id.tv_people_name);
-                tvRank = (TextView)itemView.findViewById(R.id.tv_people_rank);
+                ivRank = (ImageView)itemView.findViewById(R.id.iv_people_rank);
             }
         }
     }
