@@ -8,8 +8,8 @@
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="271dp"
-        android:paddingRight="25dp"
+        android:layout_height="321dp"
+        android:paddingRight="80dp"
         android:paddingBottom="25dp"
         android:background="@drawable/memo2"
         android:scrollbarStyle="insideOverlay"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/showSchedule"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="85dp"
             android:layout_marginLeft="35dp"
             >
 
@@ -38,6 +38,8 @@
 
     </ScrollView>
 
+
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_below="@+id/showSchedule"
@@ -47,34 +49,49 @@
         android:id="@+id/showList">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="그룹 리스트"/>
+            android:layout_marginTop="50dp"
+            android:textSize="25dp"
+            android:gravity="center"
+            android:text="오늘의 명언" />
 
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:id="@+id/save_listView"
-            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/todayFamoueSaying"
+            android:textSize="15dp"
+            android:typeface="monospace"
+            android:textStyle="italic"
+            android:layout_marginLeft="5dp"
+            android:text="좌우명" />
 
     </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onClickGroupPage"
-        android:background="@drawable/group_icon"
-        android:layout_gravity="center_horizontal|bottom"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="165dp"
         android:orientation="vertical"
-        android:id="@+id/todayLayout"
+        android:id="@+id/todayLayout">
 
-        >
+
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="94dp"
+        android:layout_height="110dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/group_button"
+        android:onClick="onClickGroupPage"
+        android:layout_gravity="center_horizontal|bottom"/>
+
 
 </FrameLayout>

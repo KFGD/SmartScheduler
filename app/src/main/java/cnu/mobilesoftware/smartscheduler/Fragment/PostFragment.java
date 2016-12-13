@@ -41,11 +41,10 @@ public class PostFragment extends Fragment implements ITitle{
 
     private final String mTitle = "Post";
     private GroupDetailActivity ownerActivity;
+
     private WebDBHelper webdb;
-    private EditText chatinput;
-    private Button sendchat;
+
     private RecyclerView showchat;
-    private ChatAdapter chatAdapter;
     public static PostFragment newInstance(GroupDetailActivity ownerActivity){
         PostFragment fragment = new PostFragment();
         fragment.ownerActivity = ownerActivity;
@@ -83,32 +82,9 @@ public class PostFragment extends Fragment implements ITitle{
         View view = inflater.inflate(R.layout.fragment_post, container, false);
         // Inflate the layout for this fragment
         webdb = new WebDBHelper();
-        chatinput = (EditText) view.findViewById(R.id.chatinput);
-        sendchat = (Button) view.findViewById(R.id.sendChat);
         showchat = (RecyclerView) view.findViewById(R.id.showchat);
         showchat.setLayoutManager(new LinearLayoutManager(ownerActivity));
 
-        sendchat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final String uuid = SmartSchedulerApplication.getUUID();
-                final String content = chatinput.getText().toString();
-                if(content.equals(""))
-                    return;
-                new AsyncTask<Void, Void, String>(){
-                    ProgressDialog pd = new ProgressDialog(getContext());
-                    @Override
-                    protected String doInBackground(Void... voids) {
-                        StringBuilder stringBuilder = webdb.INSERTBOARD("groupid", uuid, content);
-                        String text = "";
-                        if(stringBuilder != null)
-                            text = stringBuilder.toString();
-                        return text;
-                    }
-                }.execute();
-                chatinput.setText("");
-            }
-        });
         return view;
     }
 
@@ -125,8 +101,6 @@ public class PostFragment extends Fragment implements ITitle{
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                //ArrayList<String> namearray = new ArrayList<String>();
-                //ArrayList<String> contentarray = new ArrayList<String>();
                 ArrayList<ChatItem> chatItems = new ArrayList<ChatItem>();
                 try {
                     JSONArray chatArray = null;

@@ -21,4 +21,38 @@
 
     <string name="menu_settings">설정</string>
     <string name="transitionName">GroupImageName</string>
+
+    <string-array name="FamousSaying">
+        <item>앞만 보고 가자, 내 인생에 뒤란 없다.</item>
+        <item>지금 자면 꿈을 꾸지만, 지금 공부하면 꿈을 이룬다.</item>
+        <item>남과 같이 해서는 남 이상 될 수 없다.</item>
+        <item>개 같이 공부해서 정승 같이 놀자.</item>
+        <item>공부는 시간이 부족한것이 아니라 노력이 부족한거다.</item>
+        <item>피할 수 없는 고통이면 즐겨라.</item>
+        <item>고통이 없으면 얻는것도 없다.</item>
+        <item>불가능이란 노력하지 않은자의 변명이다.</item>
+        <item>한 시간 더 공부하면 남편(부인)의 얼굴이 바뀐다.</item>
+        <item>굳은 결심은 가장 유용한 지식이다.</item>
+        <item>공부는 실수를 낳지만 찍기는 기적을 낳는다</item>
+        <item>내가 헛되어 보냈던 오늘은 어제 죽은이가 그렇게 바라던 내일이다.</item>
+        <item>겁쟁이는 천번 죽지만 사나이는 한번 죽는다.</item>
+        <item>인생은 행동이다.</item>
+        <item>부지런히 하면 세상에 어려울 것 하나 없다.</item>
+        <item>서두르지 말되, 멈추지 말라.</item>
+        <item>운명은 남이개척하는 것이 아닌, 내가 개척하는 것이다.</item>
+        <item>빛이 있으면, 그림자도 있는 법이다.</item>
+        <item>하지않는 것이지, 못하는 것이 아니다.</item>
+        <item>이 사회란, 최고보다는 최선이 우상인 사회다.</item>
+        <item>못해서 안하는것이 아니라, 안해서 못하는 것이다.</item>
+        <item>중요한것은, 나에게 주어진 시간에 물얼 하느냐이다.</item>
+        <item>시련은 있어도 실패는 없다.</item>
+        <item>기업은 사회를 위해 존재한다.</item>
+        <item>부지런하면 세상에 어려울것이 없다.</item>
+        <item>노력이란 부메랑을 날려보면 반드시 성공이란 부메랑이 날라오기 마련이다.</item>
+        <item>하면 된다	</item>
+        <item>세상에서 가장 강한사람은 귀찮음, 미룸을 견디는 사람이다.</item>
+        <item>사람은 하고픈 것을 해야 행복하다.</item>
+        <item>오늘은, 내남은 일생의 첫번째날이다.</item>
+        <item>난 고통을 모르고 후회를 모르고 원망도 모른다. 내가 아는 건 노력뿐.</item>
+    </string-array>
 </resources>

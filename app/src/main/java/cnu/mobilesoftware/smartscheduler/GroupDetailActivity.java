@@ -18,7 +18,9 @@ import android.transition.Transition;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionMenu;
@@ -36,7 +38,13 @@ public class GroupDetailActivity extends AppCompatActivity{
     GroupItem groupItem;
     private WebDBHelper webdb;
     private String name;
+
+    //NoticeFragment
     FloatingActionMenu fabMenu;
+
+    //PostFragment
+    LinearLayout linear_chat;
+    EditText chatinput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +78,11 @@ public class GroupDetailActivity extends AppCompatActivity{
         collapsingToolbarLayout.setTitle(groupItem.group_title);
         memberImage.setImageResource(groupItem.img_res);
 
+        //fabMenu(NoticeFragment)
         fabMenu = (FloatingActionMenu)findViewById(R.id.fab_menu);
+        //linear_chat(LinearLayout)
+        linear_chat = (LinearLayout)findViewById(R.id.linear_chat);
+        chatinput = (EditText)findViewById(R.id.chatinput);
 
        //ViewPager
         ViewPager viewPager = (ViewPager)findViewById(R.id.viewPager);
@@ -105,8 +117,14 @@ public class GroupDetailActivity extends AppCompatActivity{
 
             @Override
             public void onPageSelected(int position) {
-                if(position == 0) fabMenu.setVisibility(View.VISIBLE);
-                else fabMenu.setVisibility(View.GONE);
+                if(position == 0) {
+                    fabMenu.setVisibility(View.VISIBLE);
+                    linear_chat.setVisibility(View.GONE);
+                }
+                else {
+                    fabMenu.setVisibility(View.GONE);
+                    linear_chat.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
@@ -141,6 +159,24 @@ public class GroupDetailActivity extends AppCompatActivity{
         AddNoticeDialog addNoticeDialog = new AddNoticeDialog();
         addNoticeDialog.show(getSupportFragmentManager(), "");
 
+    }
+
+    public void onClickSendChatBtn(View view){
+        final String uuid = SmartSchedulerApplication.getUUID();
+        final String content = chatinput.getText().toString();
+        if(content.equals(""))
+            return;
+        new AsyncTask<Void, Void, String>(){
+            @Override
+            protected String doInBackground(Void... voids) {
+                StringBuilder stringBuilder = webdb.INSERTBOARD("groupid", uuid, content);
+                String text = "";
+                if(stringBuilder != null)
+                    text = stringBuilder.toString();
+                return text;
+            }
+        }.execute();
+        chatinput.setText("");
     }
 
     public GroupItem getGroupItem(){
