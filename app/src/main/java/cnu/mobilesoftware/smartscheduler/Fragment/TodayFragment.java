@@ -9,7 +9,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -31,14 +33,15 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
     private final String mTitle = "Today";
     private ArrayList<ScheduleItem> todaySchedule = new ArrayList<>();
     TextView memoText,todayText,famousSaying;
-    LinearLayout linearLayoutShowScheudle, todayLayout;
+    LinearLayout linearLayoutShowScheudle;
 
     ArrayList<String> nameList = new ArrayList<String>();      // 배열리스트(스트링)
-    int num = 0;
+    ArrayList<String> todayMemoList = new ArrayList<String>();
+    ListView listView;
+    ArrayAdapter<String> adapter;
 
     Memo selectedMemo;
     HashMap<String, Memo> memoList;
-    ArrayList<String> famousSayingList;
 
     public static TodayFragment newInstance() {
         TodayFragment fragment = new TodayFragment();
@@ -58,8 +61,12 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
         memoText = (TextView) view.findViewById(R.id.memoToday);
         famousSaying = (TextView) view.findViewById(R.id.todayFamoueSaying);
         linearLayoutShowScheudle = (LinearLayout) view.findViewById(R.id.showSchedule);
-        todayLayout = (LinearLayout) view.findViewById(R.id.todayLayout);
 
+
+       listView = (ListView)view.findViewById(R.id.schedulelist);
+
+
+        //getListView();
         getfamousSaying();
         Refresh();
 
@@ -111,27 +118,55 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
     }
 
     private void showScheudler() {
-        if(selectedMemo == null){
-            nameList.add("\n" + "달력에 기록된 일정이 없습니다.");
-            getTextList();
+        if(selectedMemo == null && !todaySchedule.isEmpty()){
             nameList.clear();
-        }else {
-            for (int i = 0; i < todaySchedule.size(); i++) {
-                int startTime = todaySchedule.get(i).startTime;
-                int endTime = todaySchedule.get(i).endTime;
-                String subjectName = todaySchedule.get(i).subjectName;
-                String professor = todaySchedule.get(i).professor;
-                String day = todaySchedule.get(i).day;
-                String show = "." + subjectName + " " + startTime + "시~" + endTime + "시 " + professor + "교수님";
-                nameList.add(++num + show);
-
-            }
-            nameList.add("\n" + "오늘의 일정:" + selectedMemo.getContent());
+            todayMemoList.clear();
+            linearLayoutShowScheudle.removeAllViews();  //기존 모든 뷰를 모두 지운다
+            todayMemoList.add("\n" + "달력에 기록된 일정이 없습니다.");
+            showSchedule();
+            getListView();
             getTextList();
+        }
+        if(selectedMemo !=null && todaySchedule.isEmpty()){
+            todayMemoList.clear();
+            linearLayoutShowScheudle.removeAllViews();  //기존 모든 뷰를 모두 지운다
+            showSchedule();
+            todayMemoList.add("\n" + "시간표에 기록된 시간표가 없습니다.");
+            getListView();
+            getTextList();          //  nameList.clear();
+        }
+        if(selectedMemo ==null && todaySchedule.isEmpty()){
+            todayMemoList.clear();
             nameList.clear();
+            linearLayoutShowScheudle.removeAllViews();  //기존 모든 뷰를 모두 지운다
+            todayMemoList.add("\n" + "달력에 기록된 일정이 없습니다.");
+            nameList.add("\n" + "시간표에 기록된 시간표가 없습니다.");
+            getListView();
+            getTextList();         //  nameList.clear();
+        }
+        if(selectedMemo !=null && !todaySchedule.isEmpty()){
+            todayMemoList.clear();
+            nameList.clear();
+            linearLayoutShowScheudle.removeAllViews();  //기존 모든 뷰를 모두 지운다
+            showSchedule();
+            todayMemoList.add("\n" + "오늘의 일정:" + selectedMemo.getContent());
+            getListView();
+            getTextList();
         }
     }
 
+    private void showSchedule(){
+        for (int i = 0; i < todaySchedule.size(); i++) {
+            int startTime = todaySchedule.get(i).startTime;
+            int endTime = todaySchedule.get(i).endTime;
+            String subjectName = todaySchedule.get(i).subjectName;
+            String professor = todaySchedule.get(i).professor;
+            String day = todaySchedule.get(i).day;
+            String show = subjectName + ":" + startTime + "시~" + endTime + "시 " + professor + "교수님";
+            nameList.add(show);
+        }
+
+    }
 
     private void refreshScheduleMemo() {
         Date cal = Calendar.getInstance().getTime();//현재 날짜와 시간정보를 가져온다.
@@ -147,29 +182,33 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
             memoList = new HashMap<>();
     }
 
+    private void getListView(){
+        listView = new ListView(getActivity());
+        linearLayoutShowScheudle.addView(listView);  //linearLayout01 위에 생성
+        adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,nameList);
+        listView.setAdapter(adapter);
+    }
+
     //배열 리스트 가져오기
     private void getTextList() {
-        int i;
-
-////////////////////////////삭제영역///////////////////////////////////
-        linearLayoutShowScheudle.removeAllViews();  //기존 모든 뷰를 모두 지운다.
-
-
-        for (i = 0; i < nameList.size(); i++) {
-            //TextView todayText;
-          //  todayText = new TextView(getActivity());
-            todayText.setText(nameList.get(i));  //배열리스트 이용
-//            textView01.setText( ++num + "-" + etName.getText().toString());
+    int i;
+        for (i = 0; i < todayMemoList.size(); i++) {
+            TextView todayText;
+            todayText = new TextView(getActivity());
+            todayText.setText(todayMemoList.get(i));  //배열리스트 이용
             todayText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             todayText.setTextColor(Color.parseColor("#0E0F00"));
             todayText.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL));
-
-            linearLayoutShowScheudle.addView(todayText);  //linearLayout01 위에 생성
+            linearLayoutShowScheudle.addView(todayText);
         }
+
+
+
+
+
     }
 
     private void getfamousSaying(){
-        Date cal = Calendar.getInstance().getTime();//현재 날짜와 시간정보를 가져온다.
         int day = Calendar.getInstance().get(Calendar.DATE);
 
         String[] famousString = getResources().getStringArray(R.array.FamousSaying);
