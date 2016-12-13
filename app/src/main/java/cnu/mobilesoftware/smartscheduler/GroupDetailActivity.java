@@ -171,7 +171,7 @@ public class GroupDetailActivity extends AppCompatActivity{
         new AsyncTask<Void, Void, String>(){
             @Override
             protected String doInBackground(Void... voids) {
-                StringBuilder stringBuilder = webdb.INSERTBOARD("groupid", uuid, content);
+                StringBuilder stringBuilder = webdb.INSERTBOARD(groupItem.group_id, uuid, content);
                 String text = "";
                 if(stringBuilder != null)
                     text = stringBuilder.toString();
