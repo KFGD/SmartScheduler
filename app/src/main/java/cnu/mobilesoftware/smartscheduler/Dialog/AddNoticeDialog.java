@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import cnu.mobilesoftware.smartscheduler.GroupDetailActivity;
+import cnu.mobilesoftware.smartscheduler.GroupItem;
 import cnu.mobilesoftware.smartscheduler.R;
 import cnu.mobilesoftware.smartscheduler.WebDBHelper;
 
@@ -35,6 +36,8 @@ public class AddNoticeDialog extends AppCompatDialogFragment implements View.OnC
     private GroupDetailActivity ownerActivity;
     private WebDBHelper webdb;
 
+    private GroupItem groupItem = null;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class AddNoticeDialog extends AppCompatDialogFragment implements View.OnC
         View view = inflater.inflate(R.layout.dialog_notice_add, container, false);
         initializeWidget(view);
         ownerActivity = (GroupDetailActivity)getActivity();
+        groupItem = (GroupItem) getArguments().get("GROUP_ITEM");
         return view;
     }
 
@@ -65,14 +69,26 @@ public class AddNoticeDialog extends AppCompatDialogFragment implements View.OnC
     }
 
     private void onClickTimeImgBtn(final TextInputEditText editTextHour, final TextInputEditText editTextMin){
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+        /*TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int min) {
                 editTextHour.setText(String.valueOf(hour));
                 editTextMin.setText(String.valueOf(min));
             }
         }, 0, 0, false);
-        timePickerDialog.show();
+        timePickerDialog.show();*/
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("GROUP_ITEM", groupItem);
+        TimeListDialog timeListDialog = new TimeListDialog();
+        timeListDialog.setOnSelectTimeItem(new TimeListDialog.OnSelectTimeItem() {
+            @Override
+            public void onSelectTimeItem(int hour, int min) {
+                editTextHour.setText(String.valueOf(hour));
+                editTextMin.setText(String.valueOf(min));
+            }
+        });
+        timeListDialog.setArguments(bundle);
+        timeListDialog.show(getFragmentManager(), "");
     }
 
     private void onClickCalendarImgBtn(final TextInputEditText editText) {

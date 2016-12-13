@@ -300,6 +300,24 @@ public class DBHelper extends SQLiteOpenHelper{
         return items;
     }
 
+    public void updateGroupTitleInDB(String groupTitlte, String groupId){
+        SQLiteDatabase db = null;
+        try{
+            db = getWritableDatabase();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(TableInfo.GROUP_ITEM_LIST.GROUP_TITLE, groupTitlte);
+            String[] params = {groupId};
+            db.update(TableInfo.GROUP_ITEM_LIST.TABLE_NAME,
+                    contentValues,
+                    TableInfo.GROUP_ITEM_LIST.GROUP_ID + "=?",
+                    params);
+        } catch (Exception e){
+            Log.e("DB_ERROR", "upateMGroupTitlenDB");
+        } finally{
+            closeResource(db);
+        }
+    }
+
     public boolean searchGroupdTitle(String group_id){
 
         Boolean bValue = false;

@@ -156,9 +156,11 @@ public class GroupDetailActivity extends AppCompatActivity{
     }
 
     public void onClickAddNotice(View view){
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("GROUP_ITEM", groupItem);
         AddNoticeDialog addNoticeDialog = new AddNoticeDialog();
+        addNoticeDialog.setArguments(bundle);
         addNoticeDialog.show(getSupportFragmentManager(), "");
-
     }
 
     public void onClickSendChatBtn(View view){
