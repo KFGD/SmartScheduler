@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         SectionsPagerAdapter sectionPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         sectionPagerAdapter.appendFragment(MemoFragment.newInstance(this));
         sectionPagerAdapter.appendFragment(TodayFragment.newInstance());
-        sectionPagerAdapter.appendFragment(SchedulerFragment.newInstance());
+        sectionPagerAdapter.appendFragment(SchedulerFragment.newInstance(this));
         viewPager.setAdapter(sectionPagerAdapter);
         viewPager.setCurrentItem(0);
 
