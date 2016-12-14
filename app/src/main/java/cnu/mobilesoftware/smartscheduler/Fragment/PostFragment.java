@@ -70,7 +70,7 @@ public class PostFragment extends Fragment implements ITitle{
                 while (true) {
                     try {
                         handler.sendMessage(handler.obtainMessage());
-                        Thread.sleep(3000);
+                        Thread.sleep(1000);
                     } catch (Throwable t) {
                     }
                 }

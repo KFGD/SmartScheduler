@@ -185,7 +185,7 @@ public class TimeListDialog extends AppCompatDialogFragment {
         for(int i=0; i<5; ++i){
             data[i] = new ArrayList<>();
             for(int j=0; j<12; ++j){
-                if("1".equals(result[i][j]))
+                if("0".equals(result[i][j]))
                     data[i].add(String.valueOf(j+9)+":00");
             }
         }
