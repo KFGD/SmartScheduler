@@ -26,6 +26,38 @@
                     android:text="빈 시간"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title" />
             </LinearLayout>
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/rb_mon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Mon"/>
+                <RadioButton
+                    android:id="@+id/rb_tue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tue"/>
+                <RadioButton
+                    android:id="@+id/rb_wed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wed"/>
+                <RadioButton
+                    android:id="@+id/rb_thu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thu"/>
+                <RadioButton
+                    android:id="@+id/rb_fri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fri"/>
+            </RadioGroup>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="300dp"
