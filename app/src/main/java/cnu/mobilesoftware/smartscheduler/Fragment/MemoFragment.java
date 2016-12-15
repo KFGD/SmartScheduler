@@ -53,7 +53,6 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
     String[] colorOfArray = new String[]{"#7784C2", "#C784C2", "#C7EBA8", "#71EBA8", "#7130A8", "#6D8FF5"};
     // String[] colorOfArray = new String[]{"#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#FFFFFF"};
     private MainActivity ownerActivity;
-    TodayFragment todayFragment;
 
     int count = 0;
 
@@ -168,10 +167,6 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
 
     }
 
-
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -197,13 +192,7 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
             memoText.setText("일정없음");
             selectedMemo = new Memo(df.format(date));
         }
-/*        else  {
-            memo_deleteBtn.setVisibility(View.INVISIBLE);
-        }
-        else {
-            memoText.setText("일정없음");
-            selectedMemo = new Memo(df.format(date));
-        }*/
+
     }
 
     @Override
@@ -223,7 +212,7 @@ public class MemoFragment extends Fragment implements ITitle, CalendarListener, 
 
         refreshMemoList();
         resetSelectedMemo();
-        ownerActivity.refreshToday();
+        ownerActivity.Refresh();
 
     }
 

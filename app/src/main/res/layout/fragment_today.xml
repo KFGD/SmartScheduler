@@ -6,47 +6,55 @@
     tools:context="cnu.mobilesoftware.smartscheduler.Fragment.TodayFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="321dp"
-        android:paddingRight="80dp"
-        android:paddingBottom="25dp"
-        android:background="@drawable/memo2"
-        style="@android:style/Widget.DeviceDefault.ScrollView"
-        android:fillViewport="true"
-        android:clipToPadding="true">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/showSchedule"
-            android:layout_marginTop="85dp"
-            android:layout_marginLeft="35dp"
-            >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:paddingRight="60dp"
+        android:background="@drawable/memo2"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginLeft="40dp"
+            android:id="@+id/schedulelistlayout"
+            style="@android:style/Widget.DeviceDefault.ScrollView"
+            android:fillViewport="true"
+            android:clipToPadding="true">
 
             <ListView
                 android:layout_width="wrap_content"
                 android:id="@+id/schedulelist"
-                android:layout_height="180dp">
+                android:layout_height="wrap_content">
             </ListView>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:id="@+id/todayText"
-                />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/memoToday"/>
-        </LinearLayout>
-
-    </ScrollView>
+        </ScrollView>
 
 
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/showSchedule"
+        android:layout_marginTop="110dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="40dp"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="130dp"
+            android:id="@+id/memo_text"/>
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
@@ -59,9 +67,10 @@
         <TextView
             android:layout_width="387dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="70dp"
             android:gravity="center"
             android:textSize="25dp"
+            android:textStyle="italic"
             android:text="오늘의 명언" />
 
         <TextView
@@ -70,7 +79,8 @@
             android:id="@+id/todayFamoueSaying"
             android:typeface="monospace"
             android:layout_gravity="center"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="60dp"
+            android:textSize="17dp"
             android:text="좌우명"
           />
 

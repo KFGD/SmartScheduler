@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -32,10 +34,11 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
 
     private final String mTitle = "Today";
     private ArrayList<ScheduleItem> todaySchedule = new ArrayList<>();
-    TextView memoText,todayText,famousSaying;
-    LinearLayout linearLayoutShowScheudle;
+    TextView todayText,famousSaying;
+    LinearLayout linearLayout;
+    ScrollView scrollView;
 
-    ArrayList<String> nameList = new ArrayList<String>();      // 배열리스트(스트링)
+    ArrayList<String> scheudleList = new ArrayList<String>();      // 배열리스트(스트링)
     ArrayList<String> todayMemoList = new ArrayList<String>();
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -57,11 +60,10 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_today, container, false);
-        todayText = (TextView) view.findViewById(R.id.todayText);
-        memoText = (TextView) view.findViewById(R.id.memoToday);
         famousSaying = (TextView) view.findViewById(R.id.todayFamoueSaying);
-        linearLayoutShowScheudle = (LinearLayout) view.findViewById(R.id.showSchedule);
-
+        todayText = (TextView) view.findViewById(R.id.memo_text);
+        linearLayout = (LinearLayout) view.findViewById(R.id.showSchedule);
+        scrollView = (ScrollView) view.findViewById(R.id.schedulelistlayout);
 
        listView = (ListView)view.findViewById(R.id.schedulelist);
 
@@ -119,9 +121,8 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
 
     private void showScheudler() {
         if(selectedMemo == null && !todaySchedule.isEmpty()){
-            nameList.clear();
+            scheudleList.clear();
             todayMemoList.clear();
-            linearLayoutShowScheudle.removeAllViews();  //기존 모든 뷰를 모두 지운다
             todayMemoList.add("\n" + "달력에 기록된 일정이 없습니다.");
             showSchedule();
             getListView();
@@ -129,25 +130,23 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
         }
         if(selectedMemo !=null && todaySchedule.isEmpty()){
             todayMemoList.clear();
-            linearLayoutShowScheudle.removeAllViews();  //기존 모든 뷰를 모두 지운다
-            showSchedule();
-            todayMemoList.add("\n" + "시간표에 기록된 시간표가 없습니다.");
+            scheudleList.clear();
+            scheudleList.add("\n" + "시간표에 기록된 시간표가 없습니다.");
+            todayMemoList.add("\n" + "오늘의 일정:" + selectedMemo.getContent());
             getListView();
             getTextList();          //  nameList.clear();
         }
         if(selectedMemo ==null && todaySchedule.isEmpty()){
             todayMemoList.clear();
-            nameList.clear();
-            linearLayoutShowScheudle.removeAllViews();  //기존 모든 뷰를 모두 지운다
+            scheudleList.clear();
             todayMemoList.add("\n" + "달력에 기록된 일정이 없습니다.");
-            nameList.add("\n" + "시간표에 기록된 시간표가 없습니다.");
+            scheudleList.add("\n" + "시간표에 기록된 시간표가 없습니다.");
             getListView();
             getTextList();         //  nameList.clear();
         }
         if(selectedMemo !=null && !todaySchedule.isEmpty()){
             todayMemoList.clear();
-            nameList.clear();
-            linearLayoutShowScheudle.removeAllViews();  //기존 모든 뷰를 모두 지운다
+            scheudleList.clear();
             showSchedule();
             todayMemoList.add("\n" + "오늘의 일정:" + selectedMemo.getContent());
             getListView();
@@ -161,9 +160,8 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
             int endTime = todaySchedule.get(i).endTime;
             String subjectName = todaySchedule.get(i).subjectName;
             String professor = todaySchedule.get(i).professor;
-            String day = todaySchedule.get(i).day;
             String show = subjectName + ":" + startTime + "시~" + endTime + "시 " + professor + "교수님";
-            nameList.add(show);
+            scheudleList.add(show);
         }
 
     }
@@ -183,26 +181,35 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
     }
 
     private void getListView(){
+        scrollView.removeAllViews();
         listView = new ListView(getActivity());
-        linearLayoutShowScheudle.addView(listView);  //linearLayout01 위에 생성
-        adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,nameList);
+        scrollView.addView(listView);  //linearLayout01 위에 생성
+        adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_dropdown_item,scheudleList);
         listView.setAdapter(adapter);
     }
 
     //배열 리스트 가져오기
     private void getTextList() {
-    int i;
-        for (i = 0; i < todayMemoList.size(); i++) {
-            TextView todayText;
-            todayText = new TextView(getActivity());
+        linearLayout.removeAllViews();  //기존 모든 뷰를 모두 지운다
+
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int left = Math.round(5 * dm.density);
+        int right = Math.round(20 * dm.density);
+        int top = Math.round(120 * dm.density);
+
+        for (int i = 0; i < todayMemoList.size(); i++) {
+
             todayText.setText(todayMemoList.get(i));  //배열리스트 이용
             todayText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
-            todayText.setTextColor(Color.parseColor("#0E0F00"));
+            todayText.setTextColor(Color.parseColor("#D84315"));
             todayText.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL));
-            linearLayoutShowScheudle.addView(todayText);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            params.setMargins(left,top,right,0);
+            linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+            linearLayout.addView(todayText,params);
         }
-
-
 
 
 
@@ -228,4 +235,6 @@ public class TodayFragment extends Fragment implements ITitle, IRefresh {
         refreshScheduleMemo();
         showScheudler();
     }
+
+
 }
