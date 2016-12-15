@@ -4,6 +4,7 @@ import cnu.mobilesoftware.smartscheduler.SmartSchedulerApplication;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,7 +70,7 @@ public class PostFragment extends Fragment implements ITitle{
                 while (true) {
                     try {
                         handler.sendMessage(handler.obtainMessage());
-                        Thread.sleep(3000);
+                        Thread.sleep(1000);
                     } catch (Throwable t) {
                     }
                 }
@@ -110,12 +113,10 @@ public class PostFragment extends Fragment implements ITitle{
                         JSONObject j = chatArray.getJSONObject(i);
                         chatItems.add(new ChatItem(j.getString("name"),j.getString("content")));
                     }
-
                     ChatAdapter chatAdapter = new ChatAdapter();
                     chatAdapter.updateResources(chatItems);
                     showchat.setAdapter(chatAdapter);
-                    showchat.getLayoutManager().scrollToPosition(showchat.getAdapter().getItemCount());
-
+                    showchat.getLayoutManager().scrollToPosition(showchat.getAdapter().getItemCount()-1);
                 }catch (Exception e){}
             }
         }.execute();
@@ -147,6 +148,10 @@ public class PostFragment extends Fragment implements ITitle{
             ChatItem item = resources.get(position);
             holder.username.setText(item.name);
             holder.usercontent.setText(item.content);
+            if(ownerActivity.getName().equals(item.name)) {
+                holder.usercontent.setBackgroundResource(R.drawable.mytalk);
+                holder.layout.setGravity(Gravity.RIGHT);
+            }
         }
 
         @Override
@@ -158,11 +163,14 @@ public class PostFragment extends Fragment implements ITitle{
 
             final TextView username;
             final TextView usercontent;
+            final LinearLayout layout;
 
             public ChatViewHolder(View itemView) {
                 super(itemView);
+
                 username = (TextView)itemView.findViewById(R.id.username);
                 usercontent = (TextView)itemView.findViewById(R.id.usercontent);
+                layout = (LinearLayout)itemView.findViewById(R.id.activity_chat_adapter);
             }
         }
     }
